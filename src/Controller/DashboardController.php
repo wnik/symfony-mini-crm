@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: xd
- * Date: 24.02.2018
- * Time: 14:01
- */
 
 namespace App\Controller;
 
@@ -65,7 +59,7 @@ class DashboardController extends Controller
 //        $encoded = $encoder->encodePassword($user, $plain);
 //
 //        $user->setUsername('admin');
-//        $user->setEmail('wnikprojekt@gmail.com');
+//        $user->setEmail('test@gmail.com');
 //        $user->setPassword($encoded);
 //
 //        $em->persist($user);
