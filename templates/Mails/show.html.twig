@@ -1,0 +1,15 @@
+{% extends 'dashboard/index.html.twig' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block content %}
+    <div class="page-edit">
+        <div class="header">
+            <h1>Mail view</h1>
+        </div>
+        <div class="edit-form">
+            {{ mail.textHtml|raw }}
+            <div class="clear"></div>
+        </div>
+    </div>
+{% endblock %}

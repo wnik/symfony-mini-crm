@@ -1,0 +1,44 @@
+{% extends 'dashboard/index.html.twig' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block content %}
+    <div class="page-edit">
+        <div class="page-actions">
+            <select id="bulk-actions" class="pull-left">
+                <option value="0">Bulk actions</option>
+                <option value="delete">Delete</option>
+            </select>
+            <a href="{{ path('customers_add') }}" class="btn btn-success pull-right"><i class="fa fa-plus"></i>Send Mail</a>
+            <div class="clear"></div>
+        </div>
+        <div class="header">
+            <table class="table-list-header">
+                <thead>
+                <th width="20px"><input id="checkbox-all" name="checkbox-all" type="checkbox"></th>
+                <th>From</th>
+                <th>Subject</th>
+                <th class="actions"></th>
+                </thead>
+            </table>
+        </div>
+        <table class="table-list table-list-light">
+            <tbody>
+            {% for mail in mails %}
+                <tr data-id="{{ mail.id }}">
+                    <td width="40px" class="checkbox-wrapper"><input class="checkbox-row" name="checkbox-row" value="{{ mail.id }}" type="checkbox"></td>
+                    <td>{{ mail.fromName ~ ' (' ~ mail.fromAddress ~ ')' }}</td>
+                    <td><a href="{{ path('mails_show', { id: mail.id }) }}">{{ mail.subject }}</a></td>
+                    <td class="actions">
+
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {{ pagerfanta(pager, 'twitter_bootstrap3', { routeName: 'mails_index', prev_message: '<i class="fa fa-angle-left"></i>', next_message: '<i class="fa fa-angle-right"></i>' }) }}
+        {#<input id="token" type="hidden" value="{{ csrf_token('customers-delete') }}">#}
+        {#<input id="delete-route" type="hidden" value="{{ path('customers_delete') }}">#}
+    </div>
+    <script src="{{ asset('build/table.js') }}"></script>
+{% endblock %}

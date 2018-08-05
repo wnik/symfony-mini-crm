@@ -1,0 +1,67 @@
+{% extends 'dashboard/index.html.twig' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block content %}
+    <div class="page-edit">
+        <div class="page-actions">
+            <select id="bulk-actions" class="pull-left">
+                <option value="0">Bulk actions</option>
+                <option value="delete">Delete</option>
+            </select>
+            <a href="{{ path('customers_add') }}" class="btn btn-success pull-right"><i class="fa fa-plus"></i>Add Customer</a>
+            <div class="clear"></div>
+        </div>
+        <div class="header">
+            <table class="table-list-header">
+                <thead>
+                <th width="20px"><input id="checkbox-all" name="checkbox-all" type="checkbox"></th>
+                <th>Full name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th class="actions"></th>
+                </thead>
+            </table>
+        </div>
+        <table class="table-list table-list-light">
+            <tbody>
+            {% for customer in customers.currentPageResults %}
+                <tr data-id="{{ customer.getId }}">
+                    <td width="40px" class="checkbox-wrapper"><input class="checkbox-row" name="checkbox-row" value="{{ customer.getId }}" type="checkbox"></td>
+                    <td>{{ customer.getFirstName ~ ' ' ~ customer.getLastName }}</td>
+                    <td>{{ customer.getPhone }}</td>
+                    <td>{{ customer.getEmail }}</td>
+                    <td class="actions">
+                        <a class="btn btn-info" href="{{ path('customers_edit', { id: customer.getId }) }}" data-toggle="tooltip" data-placement="right" title="Edit">
+                            <i class="fa fa-pencil"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {{ pagerfanta(customers, 'twitter_bootstrap3', { routeName: 'customers', prev_message: '<i class="fa fa-angle-left"></i>', next_message: '<i class="fa fa-angle-right"></i>' }) }}
+        <input id="token" type="hidden" value="{{ csrf_token('customers-delete') }}">
+        <input id="delete-route" type="hidden" value="{{ path('customers_delete') }}">
+    </div>
+    <div id="deleteModal" class="modal modal-delete fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex flex-column flex-center">
+                    <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i></button>
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <h4 class="modal-title">Delete customers</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Do you want to delete selected customers?</p>
+                </div>
+                <div class="modal-footer flex flex-row flex-center">
+                    <button type="button" class="btn btn-default btn-delete">Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script src="{{ asset('build/table.js') }}"></script>
+{% endblock %}

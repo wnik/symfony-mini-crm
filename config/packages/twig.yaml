@@ -1,0 +1,8 @@
+twig:
+    paths: ['%kernel.project_dir%/templates']
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    globals:
+        user_management: '@App\Service\UserManagement'
+        pictures_path: '%pictures_path%'
+        pictures_noimage: '%pictures_noimage%'

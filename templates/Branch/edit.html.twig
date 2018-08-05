@@ -1,0 +1,28 @@
+{% extends 'dashboard/index.html.twig' %}
+{% block content %}
+    {% if branch %}
+        <div class="page-edit">
+            <div class="header">
+                <h1>Branch edit</h1>
+            </div>
+            <div class="edit-form">
+                {{ form_start(form, { attr: { class: 'col-lg-6 col-md-6 col-sm-6 col-xs-12 row' } }) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+                <div class="preview col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <p>Preview</p>
+                    {% if branch.getPicture is not null and branch.getPicture is not empty %}
+                        <img src="{{ asset(pictures_path ~ branch.getPicture) }}">
+                    {% else %}
+                        <img src="{{ asset(pictures_path ~ pictures_noimage) }}">
+                    {% endif %}
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    {% else %}
+        <div class="notfound">
+            <span>Branch not found.</span>
+        </div>
+    {% endif %}
+{% endblock %}

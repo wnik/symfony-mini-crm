@@ -1,0 +1,83 @@
+{% extends 'dashboard/index.html.twig' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block content %}
+    <div class="page-edit">
+        <div class="page-actions">
+            <a href="{{ path('documents_add') }}" class="btn btn-success pull-right"><i class="fa fa-plus"></i>Add Document</a>
+            <a href="#" class="btn btn-success pull-right add-folder"><i class="fa fa-folder"></i>Add Folder</a>
+            <div class="clear"></div>
+        </div>
+        <div class="header">
+            <table class="table-list-header">
+                <thead>
+                    <th>File name</th>
+                    <th>Size</th>
+                    <th>Date modified</th>
+                    <th></th>
+                </thead>
+            </table>
+        </div>
+        {% set subpathArray = subpath|split('/') %}
+        {% set subpathArray = subpathArray|slice(0, -1) %}
+        {% set parentPath = subpathArray|join('/') %}
+            <table class="table-list table-list-light table-documents">
+                {% if subpath %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('documents', { file: parentPath }) }}">
+                                <i class="fa fa-level-up"></i>
+                                ...
+                            </a>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                {% endif %}
+                {% if resources %}
+                    {% for resource in resources %}
+                        {% set finalPath = subpath ? subpath ~ '/' ~ resource.getRelativePathName : resource.getRelativePathName %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('documents', { file: finalPath }) }}">
+                                    {% if resource.getType == 'dir' %}
+                                        <i class="fa fa-folder"></i>
+                                    {% else %}
+                                        <i class="fa fa-file-text"></i>
+                                    {% endif %}
+                                    <span>{{ resource.getRelativePathName }}</span>
+                                </a>
+                            </td>
+                            <td>{{ resource.getSize }}</td>
+                            <td>{{ resource.getMTime|date('d.m.Y H:i:s') }}</td>
+                            <td><a class="delete-hidden" href="{{ finalPath }}" data-toggle="tooltip" data-placement="right" title="Delete"><i class="fa fa-trash"></i></a></td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
+    </div>
+    <div id="deleteModal" class="modal modal-delete fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex flex-column flex-center">
+                    <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i></button>
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <h4 class="modal-title">Delete resource</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Do you want to delete this resource?</p>
+                </div>
+                <div class="modal-footer flex flex-row flex-center">
+                    <button type="button" class="btn btn-default btn-delete">Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <input id="route-add" type="hidden" value="{{ path('documents_folder_add', { name: subpath }) }}">
+    <input id="route-delete" type="hidden" value="{{ path('documents_delete') }}">
+    <script src="{{ asset('build/folder-manager.js') }}"></script>
+{% endblock %}

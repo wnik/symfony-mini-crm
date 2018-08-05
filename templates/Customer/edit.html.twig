@@ -1,0 +1,23 @@
+{% extends 'dashboard/index.html.twig' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block content %}
+    {% if customer %}
+        <div class="page-edit">
+            <div class="header">
+                <h1>Customer edit</h1>
+            </div>
+            <div class="edit-form">
+                {{ form_start(form, { attr: { class: 'col-lg-6 col-md-6 col-sm-6 col-xs-12 row' } }) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+                <div class="clear"></div>
+            </div>
+        </div>
+    {% else %}
+        <div class="notfound">
+            <span>Customer not found.</span>
+        </div>
+    {% endif %}
+{% endblock %}

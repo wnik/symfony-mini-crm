@@ -1,0 +1,83 @@
+{% extends 'dashboard/index.html.twig' %}
+{% block content %}
+    <div class="page-actions">
+        <a href="{{ path('branches_add') }}" class="btn btn-success pull-right"><i class="fa fa-plus"></i>Add Branch</a>
+        <div class="clear"></div>
+    </div>
+    {% if branches %}
+        <div class="list-header">
+            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 text-center">
+                <h3>Picture</h3>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 text-center">
+                <h3>Name</h3>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 text-center">
+                <h3>Address</h3>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 text-center">
+                <h3>Head</h3>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-center">
+                <h3>Actions</h3>
+            </div>
+            <div class="clear"></div>
+        </div>
+        {% for branch in branches.currentPageResults %}
+            <div class="list-row flex-row flex-start-centered" data-id="{{ branch.getId }}">
+                <div class="picture col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                    {% if branch.getPicture %}
+                        <img src="{{ asset(pictures_path ~ branch.getPicture) }}">
+                    {% endif %}
+                </div>
+                <div class="name col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <h2>{{ branch.getName }}</h2>
+                    <h6>{{ branch.getCity.getName }}, {{ branch.getCountry.getName }}, {{ branch.getPostalCode }}</h6>
+                </div>
+                <div class="addresses col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <p>{{ branch.getAddress1 }}</p>
+                    <p>{{ branch.getAddress2 }}</p>
+                </div>
+                <div class="head col-lg-3 col-md-3 col-sm-3 col-xs-12 text-center">
+                    {% if not branch.getEmployees.isEmpty %}
+                        {% set head = branch.getEmployees.first %}
+                         {{ head.getFirstName ~ ' ' ~ head.getLastName }}
+                    {% endif %}
+                </div>
+                <div class="actions col-lg-2 col-md-2 col-sm-2 col-xs-12 flex flex-column flex-center">
+                    <a class="btn btn-info" href="{{ path('branches_edit', {id: branch.getId}) }}" data-toggle="tooltip" data-placement="right" title="Edit">
+                        <i class="fa fa-pencil"></i>
+                    </a>
+                    <a class="btn btn-danger btn-branch-remove" data-id="{{ branch.getId }}" data-route="{{ path('branches_delete', {id: branch.getId}) }}" href="#" data-toggle="tooltip" data-placement="right" title="Delete">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+        {{ pagerfanta(branches, 'twitter_bootstrap3', { routeName: 'branches', prev_message: '<i class="fa fa-angle-left"></i>', next_message: '<i class="fa fa-angle-right"></i>' }) }}
+        <div id="deleteModal" class="modal modal-delete fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header flex flex-column flex-center">
+                        <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i></button>
+                        <i class="fa fa-exclamation-triangle"></i>
+                        <h4 class="modal-title">Delete branch</h4>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p>Do you want to delete this branch?</p>
+                    </div>
+                    <div class="modal-footer flex flex-row flex-center">
+                        <button type="button" class="btn btn-default btn-delete">Delete</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script src="{{ asset('build/branches.js') }}"></script>
+    {% else %}
+        <div class="notfound">
+            <span>Branches not found.</span>
+        </div>
+    {% endif %}
+{% endblock %}

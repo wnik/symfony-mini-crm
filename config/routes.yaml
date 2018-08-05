@@ -1,0 +1,162 @@
+index:
+    path: /
+    controller: App\Controller\DashboardController::redirectToDashboard
+    defaults:
+        path: /dashboard
+        permanent: true
+dashboard:
+    path: /dashboard/
+    controller: App\Controller\DashboardController::index
+    methods: ['GET']
+dashboard_login:
+    path: /dashboard/login/
+    controller: App\Controller\DashboardController::login
+    methods: ['GET', 'POST']
+branches_index:
+    path: /dashboard/branches/
+    controller: App\Controller\Branch\BranchController::index
+    methods: ['GET', 'POST']
+    defaults:
+        page: 1
+branches:
+    path: /dashboard/branches/page/{page}
+    controller: App\Controller\Branch\BranchController::index
+    methods: ['GET', 'POST']
+    defaults:
+        page: 1
+    requirements:
+        page: '\d+'
+branches_edit:
+    path: /dashboard/branches/{id}
+    controller: App\Controller\Branch\BranchController::edit
+    methods: ['GET', 'PUT']
+    requirements:
+        id: '\d+'
+branches_delete:
+    path: /dashboard/branches/{id}
+    controller: App\Controller\Branch\BranchController::delete
+    methods: ['DELETE']
+    requirements:
+            id: '\d+'
+branches_add:
+    path: /dashboard/branches/add
+    controller: App\Controller\Branch\BranchController::add
+    methods: ['GET', 'POST']
+employees:
+    path: /dashboard/employees/
+    controller: App\Controller\Employee\EmployeeController::index
+    methods: ['GET', 'POST']
+    defaults:
+        page: 1
+employees_index:
+    path: /dashboard/employees/page/{page}
+    controller: App\Controller\Employee\EmployeeController::index
+    methods: ['GET', 'POST']
+    defaults:
+        page: 1
+    requirements:
+        page: '\d+'
+employees_add:
+    path: /dashboard/employees/add/
+    controller: App\Controller\Employee\EmployeeController::add
+    methods: ['GET', 'POST']
+employees_edit:
+    path: /dashboard/employees/{id}
+    controller: App\Controller\Employee\EmployeeController::edit
+    methods: ['GET', 'PUT']
+    requirements:
+        id: '\d+'
+employees_delete:
+    path: /dashboard/employees/
+    controller: App\Controller\Employee\EmployeeController::delete
+    methods: ['DELETE']
+customers:
+    path: /dashboard/customers/
+    controller: App\Controller\Customer\CustomerController::index
+    methods: ['GET', 'POST']
+    defaults:
+        page: 1
+customers_index:
+    path: /dashboard/customers/page/{page}
+    controller: App\Controller\Customer\CustomerController::index
+    methods: ['GET', 'POST']
+    defaults:
+        page: 1
+    requirements:
+        page: '\d+'
+customers_add:
+    path: /dashboard/customers/add/
+    controller: App\Controller\Customer\CustomerController::add
+    methods: ['GET', 'POST']
+customers_edit:
+    path: /dashboard/customers/{id}
+    controller: App\Controller\Customer\CustomerController::edit
+    methods: ['GET', 'PUT']
+    requirements:
+        id: '\d+'
+customers_delete:
+    path: /dashboard/customers/
+    controller: App\Controller\Customer\CustomerController::delete
+    methods: ['DELETE']
+documents_add:
+    path: /dashboard/documents/add
+    controller: App\Controller\Document\DocumentController::add
+    methods: ['GET', 'POST']
+documents_folder_add:
+    path: /dashboard/documents/folder/add/{name}
+    controller: App\Controller\Document\DocumentController::addFolder
+    methods: ['POST']
+    requirements:
+        name: '.+'
+    defaults:
+        name: ''
+documents_delete:
+    path: /dashboard/documents/delete
+    controller: App\Controller\Document\DocumentController::delete
+    methods: ['DELETE']
+documents:
+    path: /dashboard/documents/{file}
+    controller: App\Controller\Document\DocumentController::index
+    methods: ['GET']
+    requirements:
+        file: '.+'
+    defaults:
+        file: ''
+documents_index:
+    path: /dashboard/documents/
+    controller: App\Controller\Document\DocumentController::index
+    methods: ['GET']
+    defaults:
+        file: ''
+mails:
+    path: /dashboard/mails/
+    controller: App\Controller\Mails\MailsController::index
+    methods: ['GET']
+    defaults:
+        page: 1
+mails_index:
+    path: /dashboard/mails/page/{page}
+    controller: App\Controller\Mails\MailsController::index
+    methods: ['GET']
+    defaults:
+        page: 1
+    requirements:
+        page: '\d+'
+mails_show:
+    path: /dashboard/mails/{id}
+    controller: App\Controller\Mails\MailsController::show
+    methods: ['GET']
+    requirements:
+        page: '\d+'
+invoices:
+    path: /dashboard/invoices/
+    controller: App\Controller\Invoice\InvoiceController::index
+    methods: ['GET']
+invoices_new:
+    path: /dashboard/invoices/new
+    controller: App\Controller\Invoice\InvoiceController::create
+    methods: ['GET']
+login_check:
+    path: /auth
+logout:
+    path: /logout/

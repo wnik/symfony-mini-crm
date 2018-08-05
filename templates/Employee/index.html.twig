@@ -1,0 +1,79 @@
+{% extends 'dashboard/index.html.twig' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block content %}
+    <div class="page-edit">
+        <div class="page-actions">
+            <select id="bulk-actions" class="pull-left">
+                <option value="0">Bulk actions</option>
+                <option value="delete">Delete</option>
+            </select>
+            <a href="{{ path('employees_add') }}" class="btn btn-success pull-right"><i class="fa fa-plus"></i>Add Employee</a>
+            <div class="clear"></div>
+        </div>
+        <div class="header">
+            <table class="table-list-header">
+                <thead>
+                <th width="20px"><input id="checkbox-all" name="checkbox-all" type="checkbox"></th>
+                <th>Full name</th>
+                <th>Job title</th>
+                <th>Branch</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th class="actions"></th>
+                </thead>
+            </table>
+        </div>
+        <table class="table-list table-list-light">
+            <tbody>
+                {% for employee in employees.currentPageResults %}
+                    <tr data-id="{{ employee.getId }}">
+                        <td width="40px" class="checkbox-wrapper"><input class="checkbox-row" name="checkbox-row" value="{{ employee.getId }}" type="checkbox"></td>
+                        <td>{{ employee.getFirstName ~ ' ' ~ employee.getLastName }}</td>
+                        <td>{{ employee.getJobTitle.getName }}</td>
+                        <td>{{ employee.getBranch.getName }}</td>
+                        <td>
+                            {% if employee.getStartDate %}
+                                {{ employee.getStartDate.format('d.m.Y') }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if employee.getEndDate %}
+                                {{ employee.getEndDate.format('d.m.Y') }}
+                            {% endif %}
+                        </td>
+                        <td class="actions">
+                            <a class="btn btn-info" href="{{ path('employees_edit', { id: employee.getId }) }}" data-toggle="tooltip" data-placement="right" title="Edit">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {{ pagerfanta(employees, 'twitter_bootstrap3', { routeName: 'employees', prev_message: '<i class="fa fa-angle-left"></i>', next_message: '<i class="fa fa-angle-right"></i>' }) }}
+        <input id="token" type="hidden" value="{{ csrf_token('employees-delete') }}">
+        <input id="delete-route" type="hidden" value="{{ path('employees_delete') }}">
+    </div>
+    <div id="deleteModal" class="modal modal-delete fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex flex-column flex-center">
+                    <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i></button>
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <h4 class="modal-title">Delete employees</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Do you want to delete selected employees?</p>
+                </div>
+                <div class="modal-footer flex flex-row flex-center">
+                    <button type="button" class="btn btn-default btn-delete">Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script src="{{ asset('build/table.js') }}"></script>
+{% endblock %}
