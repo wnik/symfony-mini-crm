@@ -116,6 +116,67 @@ a {
   margin: 0;
 }
 
+#login {
+  display: block;
+  max-width: 400px;
+  width: 100%;
+  background-color: $font-white;
+  margin: 0 auto;
+  padding: 30px;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  right: 0;
+  border-top: 2px solid $btn-background-hover;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+  -webkit-box-shadow: 0px 35px 80px 0px rgba(30, 82, 117,0.15);
+  -moz-box-shadow: 0px 35px 80px 0px rgba(30, 82, 117,0.15);
+  box-shadow: 0px 35px 80px 0px rgba(30, 82, 117,0.15);
+}
+
+#login div {
+  display: flex;
+  flex-direction: column;
+}
+
+#login label {
+  color: $color-light;
+  font-weight: 300;
+}
+
+#login_email {
+  margin-bottom: 15px;
+}
+
+#login_email,
+#login_password {
+  border: 1px solid $shadow;
+}
+
+#login_submit {
+  display: block;
+  width: 100%;
+  background-color: $btn-background-hover;
+  border: 0;
+  outline: 0;
+  color: $font-white;
+  margin-top: 15px;
+  padding: 10px 15px;
+  border-radius: 25px;
+  font-size: $font-size-medium;
+  text-transform: uppercase;
+}
+
+#login_submit::after {
+  display: block;
+  content: "";
+  clear: both;
+}
+
 #logo {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 15px 0;
@@ -827,6 +888,14 @@ button {
       &.picture {
         width: 100px;
         text-align: center;
+      }
+    }
+  }
+
+  &.table-list-header-light {
+    thead {
+      th {
+        color: $main-color;
       }
     }
   }
