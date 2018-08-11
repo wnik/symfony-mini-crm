@@ -19,7 +19,32 @@
             <h1>Basket</h1>
         </div>
         <div class="edit-form">
-
+            <table class="table-list-header table-list-header-light table-items">
+                <thead>
+                    <th>Product name</th>
+                    <th>Quantity</th>
+                    <th>Gross Value</th>
+                    <th>Vat</th>
+                    <th class="actions"></th>
+                </thead>
+            </table>
+            <table class="table-list table-list-light">
+                <tbody>
+                {% for item in items %}
+                    <tr data-id="{{ item.getId }}">
+                        <td>{{ item.getName }}</td>
+                        <td contenteditable="true">0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td class="actions">
+                            <a class="btn btn-info" href="" data-toggle="tooltip" data-placement="right" title="Edit">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
             <div class="clear"></div>
         </div>
     </div>

@@ -37,10 +37,13 @@ class Item
      */
     private $invoice;
 
-
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Item\Item", inversedBy="items")
      */
     private $item;
 
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $quantity;
 }
