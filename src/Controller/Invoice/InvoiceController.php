@@ -8,6 +8,7 @@ use App\Form\Invoice\InvoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Item\Item;
+use App\Entity\Invoice\Item as InvoiceItem;
 
 class InvoiceController extends Controller
 {
@@ -34,10 +35,26 @@ class InvoiceController extends Controller
         $items = $itemRepository->findAll();
 
         $invoice = $this->invoiceFactory->create();
-        $form = $this->createForm(InvoiceType::class, $invoice);
+
+        $invoiceItem = new InvoiceItem();
+        $invoiceItem->setQuantity(0);
+        $invoiceItem->setPrice(0);
+
+        $invoice->getItems()->add($invoiceItem);
+
+        $form = $this->createForm(InvoiceType::class, $invoice, array(
+            'reference' => $this->invoiceFactory->generateReference(),
+        ));
 
         $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $invoice = $form->getData();
+
+            $invoice->setReference($this->invoiceFactory->generateReference());
+
+        }
 
         return $this->render('Invoice/new.html.twig', array(
            'title' => 'CRM - New Invoice',

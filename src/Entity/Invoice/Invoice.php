@@ -5,6 +5,7 @@ namespace App\Entity\Invoice;
 use App\Entity\Currency\CurrencyInterface;
 use App\Entity\Customer\CustomerInterface;
 use App\Entity\Payment\PaymentInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -68,6 +69,11 @@ class Invoice implements InvoiceInterface
      * @ORM\OneToOne(targetEntity="App\Entity\Payment\Payment", inversedBy="invoice")
      */
     private $payment;
+
+    public function __construct()
+    {
+        $this->items = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -221,6 +227,22 @@ class Invoice implements InvoiceInterface
     public function setRate(float $rate): void
     {
         $this->rate = $rate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getItems(): ArrayCollection
+    {
+        return $this->items;
+    }
+
+    /**
+     * @param mixed $items
+     */
+    public function setItems($items): void
+    {
+        $this->items = $items;
     }
 
 

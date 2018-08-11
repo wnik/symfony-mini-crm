@@ -28,11 +28,6 @@ class Item
     private $description;
 
     /**
-     * @ORM\Column(type="smallint")
-     */
-    private $price;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Invoice\Item", mappedBy="item")
      */
     private $items;
@@ -90,21 +85,6 @@ class Item
         $this->description = $description;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    /**
-     * @param mixed $price
-     */
-    public function setPrice($price): void
-    {
-        $this->price = $price;
-    }
 
 
 }

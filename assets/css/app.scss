@@ -23,6 +23,7 @@ $modal-btn-color: #96a6b5;
 $success-color: #7DB2B5;
 $success-color-hover: #65C7CD;
 $table-list-light-hover: #f9fbfe;
+$btn-table-header-color: #7a88a2;
 
 $font-size-small: 11px;
 $font-size-normal: 13px;
@@ -67,6 +68,11 @@ img {
 
 .flex-start-centered {
   justify-content: flex-start;
+  align-items: center;
+}
+
+.flex-between-center {
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -685,7 +691,9 @@ button {
   }
 }
 
-.edit-form {
+.edit-form,
+.invoice-form,
+.invoice-items .items{
   background-color: $font-white;
   border-left: 1px solid $content-dark;
   border-right: 1px solid $content-dark;
@@ -693,21 +701,53 @@ button {
   padding: 20px;
 }
 
-.edit-form form {
-  display: table;
+.invoice-items {
+  margin-top: 15px;
 }
 
-.edit-form form > div > div {
+.invoice-items .add-item {
+  background-color: $btn-table-header-color;
+  color: $font-white;
+  font-weight: 400;
+  border: 0;
+  border-radius: 3px;
+
+  &:hover {
+    background-color: $main-color;
+  }
+
+  .fa {
+    padding-right: 5px;
+  }
+}
+
+.main-buttons {
+  margin-top: 15px;
+}
+
+.edit-form form {
+  display: table;
+  width: 100%;
+}
+
+.edit-form form > div > div,
+.invoice-form .form-group {
   display: table-row;
 }
 
-.edit-form form > div > div label {
+.edit-form form > div > div label,
+.invoice-form label {
   padding-bottom: 25px;
   padding-right: 15px;
   color: $main-color;
   font-size: $font-size-normal;
   text-transform: uppercase;
   font-weight: 600;
+}
+
+.invoice-form label {
+  padding-bottom: 5px;
+  padding-right: 0;
 }
 
 .edit-form .preview p {
@@ -719,17 +759,48 @@ button {
 
 .edit-form form > div > div label,
 .edit-form form > div > div input,
-.edit-form form > div > div select {
+.edit-form form > div > div select,
+.invoice-form label,
+.invoice-form input,
+.invoice-form select{
   display: table-cell;
 }
 
+.invoice-form .general label {
+  padding-right: 35px;
+  text-align: right;
+}
+
+.invoice-form .general .form-group {
+  margin-bottom: 15px;
+  line-height: 4;
+}
+
+.invoice-form .general input,
+.invoice-form .general select {
+  min-width: 400px;
+}
+
 .edit-form form > div > div input,
-.edit-form form > div > div select {
+.edit-form form > div > div select,
+.invoice-form input,
+.invoice-form select,
+.invoice-items input,
+.invoice-items select {
   color: $sidebar-dark;
   background-color: $font-white;
   border: 1px solid $shadow;
-  padding: 12px 24px;
+  padding: 12px 10px;
   min-width: 300px;
+  height: auto;
+}
+
+.invoice-form input,
+.invoice-form select,
+.invoice-items input,
+.invoice-items select{
+  min-width: auto;
+  width: 100%;
 }
 
 .edit-form form .btn-save {
@@ -901,12 +972,13 @@ button {
     }
   }
 
-  &.table-items {
+  &.table-items-header {
 
     th {
-      padding: 5px 0;
-      border-bottom: 1px solid $main-color;
+      padding: 0 15px 10px 15px;
+      border-bottom: 1px solid $color-light;
     }
+
   }
 }
 
@@ -1012,6 +1084,20 @@ button {
             padding-right: 5px;
           }
         }
+      }
+    }
+  }
+
+  &.table-items {
+    tr td {
+      padding: 10px 15px;
+
+      &:nth-child(2) input {
+        text-align: center;
+      }
+
+      &:first-child {
+        padding: 10px 15px;
       }
     }
   }
