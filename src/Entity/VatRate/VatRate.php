@@ -37,4 +37,70 @@ class VatRate
         $this->invoiceItems = new ArrayCollection();
     }
 
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRate()
+    {
+        return $this->rate;
+    }
+
+    /**
+     * @param mixed $rate
+     */
+    public function setRate($rate): void
+    {
+        $this->rate = $rate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInvoiceItems()
+    {
+        return $this->invoiceItems;
+    }
+
+    /**
+     * @param mixed $invoiceItems
+     */
+    public function setInvoiceItems($invoiceItems): void
+    {
+        $this->invoiceItems = $invoiceItems;
+    }
+
+
+
 }

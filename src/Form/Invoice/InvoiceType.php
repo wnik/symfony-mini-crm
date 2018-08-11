@@ -8,6 +8,7 @@ use App\Entity\Invoice\Invoice;
 use App\Entity\Invoice\Type;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -21,6 +22,11 @@ class InvoiceType extends AbstractType
     {
         $builder->add('reference', TextType::class, array(
                 'label' => 'Reference',
+                'required' => false,
+                'disabled' => true,
+                'attr' => array(
+                  'placeholder' => $options['reference'],
+                ),
             )
         )
             ->add('type', EntityType::class, array(
@@ -42,7 +48,7 @@ class InvoiceType extends AbstractType
                 'choice_label' => 'getFullName',
                 'label' => 'Customer',
                 'placeholder' => 'Choose customer',
-                'required' => false,
+                'required' => true,
             ))
             ->add('currency', EntityType::class, array(
                 'class' => Currency::class,
@@ -53,6 +59,10 @@ class InvoiceType extends AbstractType
                 'label' => 'Exchange rate',
                 'scale' => 2,
                 'required' => false,
+            ))
+            ->add('items', CollectionType::class, array(
+                'entry_type' => ItemType::class,
+                'allow_add' => true,
             ))
             ->add('submit', SubmitType::class, array(
                 'label' => 'Save',
@@ -67,6 +77,7 @@ class InvoiceType extends AbstractType
         $resolver->setDefaults(
             array(
                 'data_class' => Invoice::class,
+                'reference' => '',
             )
         );
     }

@@ -24,6 +24,10 @@ class InvoiceRepository extends ServiceEntityRepository implements InvoiceReposi
     public function getLast(): ?InvoiceInterface
     {
         $qb = $this->createQueryBuilder('i')
+            ->innerJoin('i.type', 't')
+            ->andWhere('i.reference LIKE :reference')
+            ->andWhere('t.id = 1')
+            ->setParameter('reference', "%" . date('Y'))
             ->orderBy('i.id', 'DESC')
             ->setMaxResults(1);
 

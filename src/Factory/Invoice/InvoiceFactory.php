@@ -4,15 +4,15 @@ namespace App\Factory\Invoice;
 
 use App\Entity\Invoice\Invoice;
 use App\Entity\Invoice\InvoiceInterface;
-use App\Repository\Invoice\InvoiceRepositoryInterface;
+use App\Service\InvoiceNumberGenerator\InvoiceNumberGeneratorInterface;
 
 final class InvoiceFactory implements InvoiceFactoryInterface
 {
-    private $invoiceRepository;
+    private $invoiceNumberGenerator;
 
-    public function __construct(InvoiceRepositoryInterface $invoiceRepository)
+    public function __construct(InvoiceNumberGeneratorInterface $invoiceNumberGenerator)
     {
-        $this->invoiceRepository = $invoiceRepository;
+        $this->invoiceNumberGenerator = $invoiceNumberGenerator;
     }
 
     public function create(): InvoiceInterface
@@ -20,17 +20,9 @@ final class InvoiceFactory implements InvoiceFactoryInterface
         return new Invoice();
     }
 
-    public function generateReference()
+    public function generateReference(): string
     {
-        $invoice = $this->invoiceRepository->getLast();
-
-        if (!$invoice) {
-            return '';
-        }
-
-        dump($invoice);
-
-        return '';
+        return $this->invoiceNumberGenerator->generate();
 
     }
 }

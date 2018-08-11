@@ -155,7 +155,7 @@ invoices:
 invoices_new:
     path: /dashboard/invoices/new
     controller: App\Controller\Invoice\InvoiceController::create
-    methods: ['GET']
+    methods: ['GET', 'POST']
 login_check:
     path: /auth
 logout:
