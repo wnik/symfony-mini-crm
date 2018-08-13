@@ -6,5 +6,5 @@ use App\Entity\Invoice\InvoiceInterface;
 
 interface InvoiceRepositoryInterface
 {
-    public function getLast(): ?InvoiceInterface;
+    public function getLast(int $typeId): ?InvoiceInterface;
 }

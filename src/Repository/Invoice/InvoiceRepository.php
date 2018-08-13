@@ -21,12 +21,13 @@ class InvoiceRepository extends ServiceEntityRepository implements InvoiceReposi
         parent::__construct($registry, Invoice::class);
     }
 
-    public function getLast(): ?InvoiceInterface
+    public function getLast(int $typeId): ?InvoiceInterface
     {
         $qb = $this->createQueryBuilder('i')
             ->innerJoin('i.type', 't')
             ->andWhere('i.reference LIKE :reference')
-            ->andWhere('t.id = 1')
+            ->andWhere('t.id = :id')
+            ->setParameter('id', $typeId)
             ->setParameter('reference', "%" . date('Y'))
             ->orderBy('i.id', 'DESC')
             ->setMaxResults(1);

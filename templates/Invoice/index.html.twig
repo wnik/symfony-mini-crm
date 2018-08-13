@@ -22,23 +22,26 @@
                 <th>Issue Date</th>
                 <th>Due Date</th>
                 <th>Amount</th>
-                <th>Status</th>
                 <th class="actions"></th>
                 </thead>
             </table>
         </div>
         <table class="table-list table-list-light">
             <tbody>
-            {#{% for mail in mails %}#}
-                {#<tr data-id="{{ mail.id }}">#}
-                    {#<td width="40px" class="checkbox-wrapper"><input class="checkbox-row" name="checkbox-row" value="{{ mail.id }}" type="checkbox"></td>#}
-                    {#<td>{{ mail.fromName ~ ' (' ~ mail.fromAddress ~ ')' }}</td>#}
-                    {#<td><a href="{{ path('mails_show', { id: mail.id }) }}">{{ mail.subject }}</a></td>#}
-                    {#<td class="actions">#}
+            {% for invoice in invoices %}
+                <tr data-id="{{ invoice.id }}">
+                    <td width="40px" class="checkbox-wrapper"><input class="checkbox-row" name="checkbox-row" value="{{ invoice.id }}" type="checkbox"></td>
+                    <td>{{ invoice.reference }}</td>
+                    <td>{{ invoice.type.name }}</td>
+                    <td>{{ invoice.customer.firstName ~ ' ' ~ invoice.customer.lastName }}</td>
+                    <td>{{ invoice.issueDate.format('d.m.Y') }}</td>
+                    <td>{{ invoice.dueDate.format('d.m.Y') }}</td>
+                    <td>{{ propertySummary(invoice.items, 'price') }}</td>
+                    <td class="actions">
 
-                    {#</td>#}
-                {#</tr>#}
-            {#{% endfor %}#}
+                    </td>
+                </tr>
+            {% endfor %}
             </tbody>
         </table>
         {#{{ pagerfanta(pager, 'twitter_bootstrap3', { routeName: 'mails_index', prev_message: '<i class="fa fa-angle-left"></i>', next_message: '<i class="fa fa-angle-right"></i>' }) }}#}

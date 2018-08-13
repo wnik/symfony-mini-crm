@@ -2,6 +2,8 @@
 
 namespace App\Controller\Invoice;
 
+use App\Entity\Invoice\Invoice;
+use App\Entity\Invoice\Type;
 use App\Factory\Invoice\InvoiceFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use App\Form\Invoice\InvoiceType;
@@ -21,10 +23,11 @@ class InvoiceController extends Controller
 
     public function index(): Response
     {
-
+        $invoices = $this->getDoctrine()->getRepository(Invoice::class)->findAll();
 
         return $this->render('Invoice/index.html.twig', array(
            'title' => 'CRM - Sales',
+            'invoices' => $invoices,
         ));
     }
 
@@ -40,10 +43,10 @@ class InvoiceController extends Controller
         $invoiceItem->setQuantity(0);
         $invoiceItem->setPrice(0);
 
-        $invoice->getItems()->add($invoiceItem);
+        $invoice->addItem($invoiceItem);
 
         $form = $this->createForm(InvoiceType::class, $invoice, array(
-            'reference' => $this->invoiceFactory->generateReference(),
+            'reference' => $this->invoiceFactory->generateReference($this->getDoctrine()->getRepository(Type::class)->getDefault()),
         ));
 
         $form->handleRequest($request);
@@ -52,8 +55,15 @@ class InvoiceController extends Controller
 
             $invoice = $form->getData();
 
-            $invoice->setReference($this->invoiceFactory->generateReference());
+            $reference = $this->invoiceFactory->generateReference($invoice->getType());
 
+            $invoice->setReference($reference);
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager->persist($invoice);
+
+            $entityManager->flush();
         }
 
         return $this->render('Invoice/new.html.twig', array(

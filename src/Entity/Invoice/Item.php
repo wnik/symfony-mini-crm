@@ -122,9 +122,11 @@ class Item
     /**
      * @param mixed $invoice
      */
-    public function setInvoice($invoice): void
+    public function setInvoice($invoice): self
     {
         $this->invoice = $invoice;
+
+        return $this;
     }
 
     /**

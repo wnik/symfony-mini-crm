@@ -20,8 +20,10 @@ class TypeRepository extends ServiceEntityRepository implements TypeRepositoryIn
         parent::__construct($registry, Type::class);
     }
 
-    public function getFirst(): ?TypeInterface
+    public function getDefault(): ?TypeInterface
     {
-        return $this->find(1);
+        return $this->findOneBy(array(
+            'isDefault' => true,
+        ));
     }
 }

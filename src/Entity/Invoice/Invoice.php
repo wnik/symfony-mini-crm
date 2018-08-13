@@ -6,7 +6,9 @@ use App\Entity\Currency\CurrencyInterface;
 use App\Entity\Customer\CustomerInterface;
 use App\Entity\Payment\PaymentInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Invoice\Item as Item;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Invoice\InvoiceRepository")
@@ -51,19 +53,19 @@ class Invoice implements InvoiceInterface
     private $currency;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Invoice\Item", mappedBy="invoice")
+     * @ORM\OneToMany(targetEntity="App\Entity\Invoice\Item", mappedBy="invoice", cascade={"persist"})
      */
     private $items;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
     private $rate;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $status;
+    private $status = false;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Payment\Payment", inversedBy="invoice")
@@ -232,18 +234,32 @@ class Invoice implements InvoiceInterface
     /**
      * @return mixed
      */
-    public function getItems(): ArrayCollection
+    public function getItems(): Collection
     {
         return $this->items;
     }
 
-    /**
-     * @param mixed $items
-     */
-    public function setItems($items): void
+    public function addItem(Item $item): self
     {
-        $this->items = $items;
+        if (!$this->items->contains($item)) {
+            $this->items[] = $item;
+            $item->setInvoice($this);
+        }
+
+        return $this;
     }
 
+    public function removeItem(Item $item): self
+   {
+        if ($this->items->contains($item)) {
+            $this->items->removeElement($item);
+
+            if ($item->getInvoice() === $this) {
+                $item->setInvoice(null);
+            }
+        }
+
+        return $this;
+    }
 
 }

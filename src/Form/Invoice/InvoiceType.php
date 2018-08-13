@@ -61,8 +61,10 @@ class InvoiceType extends AbstractType
                 'required' => false,
             ))
             ->add('items', CollectionType::class, array(
+                'by_reference' => false,
                 'entry_type' => ItemType::class,
                 'allow_add' => true,
+                'allow_delete' => true,
             ))
             ->add('submit', SubmitType::class, array(
                 'label' => 'Save',

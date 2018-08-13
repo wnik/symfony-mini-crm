@@ -13,12 +13,17 @@ class InvoiceNumberGenerator implements InvoiceNumberGeneratorInterface
         $this->invoiceRepository = $invoiceRepository;
     }
 
-    public function generate(): string
+    public function generate(int $typeId): string
     {
-        $invoice = $this->invoiceRepository->getLast();
+        $invoice = $this->invoiceRepository->getLast($typeId);
 
         if ($invoice) {
-            return $invoice->getReference();
+            $referenceArray = explode('/', $invoice->getReference());
+
+            $reference = (int) $referenceArray[0] + 1;
+            $reference = "{$reference}/$referenceArray[1]/{$referenceArray[2]}";
+
+            return $reference;
         }
 
         return '1/' . date('m') . '/' . date('Y');

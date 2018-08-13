@@ -88,6 +88,16 @@ a {
   transition: all .3s ease;
 }
 
+.alert-success {
+  background-color: $font-white;
+  border: 1px solid $shadow;
+  border-top: 2px solid $success-color;
+  color: $success-color;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+
 #navigation {
   display: block;
   position: fixed;
@@ -727,7 +737,6 @@ button {
 
 .edit-form form {
   display: table;
-  width: 100%;
 }
 
 .edit-form form > div > div,

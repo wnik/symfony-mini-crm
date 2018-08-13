@@ -63,3 +63,6 @@ services:
     App\Controller\Mails\MailsController:
         arguments:
             - '@PhpImap\Mailbox'
+    App\Service\PropertySummary:
+        tags:
+            - { name: twig.extension }

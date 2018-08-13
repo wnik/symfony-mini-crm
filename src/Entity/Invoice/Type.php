@@ -23,6 +23,11 @@ class Type implements TypeInterface
     private $name;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isDefault = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Invoice\Invoice", mappedBy="type")
      */
     private $invoices;
@@ -31,5 +36,39 @@ class Type implements TypeInterface
     {
         return $this->name;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsDefault(): bool
+    {
+        return $this->isDefault;
+    }
+
+    /**
+     * @param mixed $isDefault
+     */
+    public function setIsDefault($isDefault): void
+    {
+        $this->isDefault = $isDefault;
+    }
+
+
 
 }
