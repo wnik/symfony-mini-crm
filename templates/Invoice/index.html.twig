@@ -21,7 +21,8 @@
                 <th>Customer</th>
                 <th>Issue Date</th>
                 <th>Due Date</th>
-                <th>Amount</th>
+                <th class="text-center">Amount</th>
+                <th class="text-center">Currency</th>
                 <th class="actions"></th>
                 </thead>
             </table>
@@ -36,17 +37,39 @@
                     <td>{{ invoice.customer.firstName ~ ' ' ~ invoice.customer.lastName }}</td>
                     <td>{{ invoice.issueDate.format('d.m.Y') }}</td>
                     <td>{{ invoice.dueDate.format('d.m.Y') }}</td>
-                    <td>{{ propertySummary(invoice.items, 'price') }}</td>
+                    <td class="text-center">{{ propertySummary(invoice.items, 'getPrice') }}</td>
+                    <td class="text-center">{{ invoice.currency.iSO }}</td>
                     <td class="actions">
-
+                        <a class="btn btn-info" href="{{ path('invoices_edit', { id: invoice.id }) }}" data-toggle="tooltip" data-placement="right" title="Edit">
+                            <i class="fa fa-pencil"></i>
+                        </a>
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
         {#{{ pagerfanta(pager, 'twitter_bootstrap3', { routeName: 'mails_index', prev_message: '<i class="fa fa-angle-left"></i>', next_message: '<i class="fa fa-angle-right"></i>' }) }}#}
-        {#<input id="token" type="hidden" value="{{ csrf_token('customers-delete') }}">#}
-        {#<input id="delete-route" type="hidden" value="{{ path('customers_delete') }}">#}
+        <input id="token" type="hidden" value="{{ csrf_token('invoices-delete') }}">
+        <input id="delete-route" type="hidden" value="{{ path('invoices_delete') }}">
+    </div>
+    <div id="deleteModal" class="modal modal-delete fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex flex-column flex-center">
+                    <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i></button>
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <h4 class="modal-title">Delete invoices</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Do you want to delete selected invoices?</p>
+                </div>
+                <div class="modal-footer flex flex-row flex-center">
+                    <button type="button" class="btn btn-default btn-delete">Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
     </div>
     <script src="{{ asset('build/table.js') }}"></script>
 {% endblock %}

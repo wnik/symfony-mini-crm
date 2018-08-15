@@ -34,6 +34,15 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Controller\Mails\MailsController:
+        arguments:
+            - '@PhpImap\Mailbox'
+    App\Controller\Customer\CustomerController:
+        arguments:
+            - '@App\Service\EntityRemover\EntityRemoverInterface'
+    App\Controller\Employee\EmployeeController:
+        arguments:
+        - '@App\Service\EntityRemover\EntityRemoverInterface'
     App\Service\UserManagement:
         autowire: false
         arguments:
@@ -60,9 +69,10 @@ services:
         arguments:
             - 'KB'
             - 'GB'
-    App\Controller\Mails\MailsController:
-        arguments:
-            - '@PhpImap\Mailbox'
     App\Service\PropertySummary:
         tags:
             - { name: twig.extension }
+    App\Service\EntityRemover\EntityRemover:
+        arguments:
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@Symfony\Component\Security\Csrf\CsrfTokenManagerInterface'

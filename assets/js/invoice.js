@@ -4,9 +4,13 @@ var Invoice = (function ($) {
       selectors: {
           header: '.invoice-items .header',
           collection: '.table-items',
-          btn: '.add-item'
+          btn: '.add-item',
+          btnRemove: '.btn-remove'
       },
-      btn: '<button class="add-item" type="button"><i class="fa fa-plus"></i>Add item</button>'
+      btn: '<button class="add-item" type="button"><i class="fa fa-plus"></i>Add item</button>',
+      btnRemove: '<a class="btn btn-danger btn-remove" href="#" data-toggle="tooltip" data-placement="right" title="Delete">' +
+          '<i class="fa fa-trash"></i>' +
+          '</a>'
     };
 
     function Invoice() {
@@ -42,13 +46,25 @@ var Invoice = (function ($) {
 
         var $newRow = $('<tr class="item-row"></tr>').append(newForm);
 
+        $newRow.append('<td width="7%">' + config.btnRemove + '</td>');
+
         Invoice.$collectionHolder.append($newRow);
 
     }
 
     function onAddItemClick() {
         $('body').on('click', config.selectors.btn, function (e) {
+            e.preventDefault();
+
             addItemForm();
+        });
+    }
+
+    function onRemoveItemClick() {
+        $('body').on('click', config.selectors.btnRemove, function (e) {
+            e.preventDefault();
+
+            $(this).parents('.item-row').remove();
         });
     }
 
@@ -63,6 +79,7 @@ var Invoice = (function ($) {
 
             addItemButton();
             onAddItemClick();
+            onRemoveItemClick();
         });
     }
 

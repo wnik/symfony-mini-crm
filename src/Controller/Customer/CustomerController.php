@@ -4,15 +4,24 @@ namespace App\Controller\Customer;
 
 use App\Entity\Customer\Customer;
 use App\Form\Customer\CustomerType;
+use App\Service\EntityRemover\EntityRemoverInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Search;
 use App\Form\SearchSidebarType;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Csrf\CsrfToken;
 
 class CustomerController extends Controller
 {
+    private $entityRemover;
+
+    public function __construct(EntityRemoverInterface $entityRemover)
+    {
+        $this->entityRemover = $entityRemover;
+    }
+
     public function index(int $page, Request $request)
     {
         $search = new Search();
@@ -110,64 +119,17 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function delete(Request $request)
+    public function delete(Request $request): JsonResponse
     {
-        $response = array(
-            'success' => false,
-            'payload' => null,
+        $response = $this->entityRemover->remove(Customer::class,
+            $request->request->get('ids'),
+            new CsrfToken('customers-delete',
+                $request->request->get('token')
+            )
         );
 
-        $ids = $request->get('ids');
-
-        $token = $request->request->get('token');
-
-        if (!$ids || !$token || !$this->isCsrfTokenValid('customers-delete', $token)) {
-            return new JsonResponse($response);
-        }
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $repository = $this->getDoctrine()->getRepository(Customer::class);
-        $connection = $this->getDoctrine()->getConnection();
-
-        $connection->setAutoCommit(false);
-
-        $connection->beginTransaction();
-
-        $isNotFound = false;
-
-        try {
-            foreach ($ids as $id) {
-                $customer = $repository->find($id);
-
-                if (!$customer) {
-                    $connection->rollback();
-                    $connection->close();
-
-                    $isNotFound = true;
-
-                    break;
-                }
-
-                $entityManager->remove($customer);
-                $entityManager->flush();
-            }
-
-            if ($isNotFound) {
-                return new JsonResponse($response);
-            }
-
-            $connection->commit();
-            $connection->close();
-
-            $response = array(
-                'success' => true,
-                'payload' => null,
-            );
-
-            return new JsonResponse($response);
-        } catch (\Exception $e) {
-            return new JsonResponse($response);
-        }
-
+        return new JsonResponse(array(
+            'success' => $response,
+        ));
     }
 }

@@ -6,13 +6,21 @@ use App\Entity\Employee\Employee;
 use App\Form\Employee\EmployeeType;
 use App\Entity\Search;
 use App\Form\SearchSidebarType;
+use App\Service\EntityRemover\EntityRemoverInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Csrf\CsrfToken;
 
 class EmployeeController extends Controller
 {
+    private $entityRemover;
+
+    public function __construct(EntityRemoverInterface $entityRemover)
+    {
+        $this->entityRemover = $entityRemover;
+    }
 
     /**
      * @return \Symfony\Component\HttpFoundation\Response
@@ -87,7 +95,7 @@ class EmployeeController extends Controller
 
         $employee = $repository->find($id);
 
-        $picture = $employee->getPicture();
+        $picture = $employee ? $employee->getPicture() : null;
 
         $form = $this->createForm(EmployeeType::class, $employee, array(
             'method' => 'PUT',
@@ -120,69 +128,17 @@ class EmployeeController extends Controller
         ]);
     }
 
-    public function delete(Request $request)
+    public function delete(Request $request): JsonResponse
     {
-        $response = array(
-          'success' => false,
-          'payload' => null,
+        $response = $this->entityRemover->remove(Employee::class,
+            $request->request->get('ids'),
+            new CsrfToken('employees-delete',
+                $request->request->get('token')
+            )
         );
 
-        $ids = $request->get('ids');
-
-        $token = $request->request->get('token');
-
-        if (!$ids || !$token || !$this->isCsrfTokenValid('employees-delete', $token)) {
-            return new JsonResponse($response);
-        }
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $repository = $this->getDoctrine()->getRepository(Employee::class);
-        $connection = $this->getDoctrine()->getConnection();
-
-        $connection->setAutoCommit(false);
-
-        $connection->beginTransaction();
-
-        $isNotFound = false;
-
-        try {
-            foreach ($ids as $id) {
-                $employee = $repository->find($id);
-
-                if (!$employee) {
-                    $connection->rollback();
-                    $connection->close();
-
-                    $isNotFound = true;
-
-                    break;
-                }
-
-//                if ($employee->getUser()) {
-//                    $entityManager->remove($employee->getUser());
-//                    $entityManager->flush();
-//                }
-
-                $entityManager->remove($employee);
-                $entityManager->flush();
-            }
-
-            if ($isNotFound) {
-                return new JsonResponse($response);
-            }
-
-            $connection->commit();
-            $connection->close();
-
-            $response = array(
-                'success' => true,
-                'payload' => null,
-            );
-
-            return new JsonResponse($response);
-        } catch (\Exception $e) {
-            return new JsonResponse($response);
-        }
-
+        return new JsonResponse(array(
+            'success' => $response,
+        ));
     }
 }

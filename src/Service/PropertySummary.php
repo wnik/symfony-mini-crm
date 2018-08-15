@@ -15,14 +15,12 @@ class PropertySummary extends AbstractExtension
         );
     }
 
-    public function sumProperty(Collection $collection, string $property)
+    public function sumProperty(Collection $collection, string $method)
     {
         $sum = 0;
 
-//        dump($collection->getIterator());
-        foreach ($collection->getIterator() as $i => $item) {
-//            dump($item);
-//            $sum += $item->{$property};
+        foreach ($collection->getIterator() as $item) {
+            $sum += $item->$method();
         }
 
         return $sum;

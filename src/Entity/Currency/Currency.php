@@ -29,6 +29,11 @@ Class Currency implements CurrencyInterface
     private $iso;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isDefault = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Invoice\Invoice", mappedBy="currency")
      */
     private $invoices;
@@ -61,5 +66,15 @@ Class Currency implements CurrencyInterface
     public function getFullName(): string
     {
         return "{$this->name} ({$this->iso})";
+    }
+
+    public function getIsDefault(): bool
+    {
+        return $this->isDefault;
+    }
+
+    public function setIsDefault(bool $isDefault): void
+    {
+        $this->isDefault = $isDefault;
     }
 }

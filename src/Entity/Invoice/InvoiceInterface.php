@@ -24,6 +24,6 @@ interface InvoiceInterface
     public function setCustomer(CustomerInterface $customer): void;
     public function setCurrency(CurrencyInterface $currency): void;
     public function setPayment(PaymentInterface $payment): void;
-    public function addItem(Item $item): Invoice;
-    public function removeItem(Item $item): Invoice;
+    public function addItem(Item $item): InvoiceInterface;
+    public function removeItem(Item $item): InvoiceInterface;
 }

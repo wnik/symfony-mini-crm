@@ -53,7 +53,7 @@ class Invoice implements InvoiceInterface
     private $currency;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Invoice\Item", mappedBy="invoice", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Invoice\Item", mappedBy="invoice", cascade={"persist"}, orphanRemoval=true)
      */
     private $items;
 
@@ -239,7 +239,7 @@ class Invoice implements InvoiceInterface
         return $this->items;
     }
 
-    public function addItem(Item $item): self
+    public function addItem(Item $item): InvoiceInterface
     {
         if (!$this->items->contains($item)) {
             $this->items[] = $item;
@@ -249,7 +249,7 @@ class Invoice implements InvoiceInterface
         return $this;
     }
 
-    public function removeItem(Item $item): self
+    public function removeItem(Item $item): InvoiceInterface
    {
         if ($this->items->contains($item)) {
             $this->items->removeElement($item);

@@ -156,6 +156,16 @@ invoices_new:
     path: /dashboard/invoices/new
     controller: App\Controller\Invoice\InvoiceController::create
     methods: ['GET', 'POST']
+invoices_edit:
+    path: /dashboard/invoices/{id}
+    controller: App\Controller\Invoice\InvoiceController::edit
+    methods: ['GET', 'PUT']
+    requirements:
+        id: '\d+'
+invoices_delete:
+    path: /dashboard/invoices/
+    controller: App\Controller\Invoice\InvoiceController::delete
+    methods: ['DELETE']
 login_check:
     path: /auth
 logout:

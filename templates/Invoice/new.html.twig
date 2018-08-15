@@ -3,78 +3,90 @@
     {{ title }}
 {% endblock %}
 {% block content %}
-    {{ form_start(form, { attr: { class: 'row' } }) }}
-        <div class="page-edit">
-            <div class="header">
-                <h1>General</h1>
+    {% if invoice is not null %}
+        {{ form_start(form) }}
+            <div class="page-edit">
+                <div class="header">
+                    <h1>General</h1>
+                </div>
+                <div class="invoice-form">
+                        <div class="general">
+                            <div class="form-group">
+                                {{ form_label(form.reference) }}
+                                {{ form_widget(form.reference, { attr: { class: 'form-control' } }) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.type) }}
+                                {{ form_widget(form.type, { attr: { class: 'form-control' } }) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.issueDate) }}
+                                {{ form_widget(form.issueDate, { attr: { class: 'form-control' } }) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.dueDate) }}
+                                {{ form_widget(form.dueDate, { attr: { class: 'form-control' } }) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.customer) }}
+                                {{ form_widget(form.customer, { attr: { class: 'form-control' } }) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.currency) }}
+                                {{ form_widget(form.currency, { attr: { class: 'form-control' } }) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.rate) }}
+                                {{ form_widget(form.rate, { attr: { class: 'form-control' } }) }}
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                </div>
             </div>
-            <div class="invoice-form">
-                    <div class="general col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="form-group">
-                            {{ form_label(form.reference) }}
-                            {{ form_widget(form.reference, { attr: { class: 'form-control' } }) }}
-                        </div>
-                        <div class="form-group">
-                            {{ form_label(form.type) }}
-                            {{ form_widget(form.type, { attr: { class: 'form-control' } }) }}
-                        </div>
-                        <div class="form-group">
-                            {{ form_label(form.issueDate) }}
-                            {{ form_widget(form.issueDate, { attr: { class: 'form-control' } }) }}
-                        </div>
-                        <div class="form-group">
-                            {{ form_label(form.dueDate) }}
-                            {{ form_widget(form.dueDate, { attr: { class: 'form-control' } }) }}
-                        </div>
-                        <div class="form-group">
-                            {{ form_label(form.customer) }}
-                            {{ form_widget(form.customer, { attr: { class: 'form-control' } }) }}
-                        </div>
-                        <div class="form-group">
-                            {{ form_label(form.currency) }}
-                            {{ form_widget(form.currency, { attr: { class: 'form-control' } }) }}
-                        </div>
-                        <div class="form-group">
-                            {{ form_label(form.rate) }}
-                            {{ form_widget(form.rate, { attr: { class: 'form-control' } }) }}
-                        </div>
-                    </div>
-                    <div class="clear"></div>
+            <div class="page-edit invoice-items">
+                <div class="header flex-row flex-between-center">
+                    <h1>Items</h1>
+                </div>
+                <div class="items">
+                    <table class="table-list-header table-list-header-light table-items-header">
+                        <thead>
+                        <th class="text-center" width="25%">Product</th>
+                        <th class="text-center" width="12%">Quantity</th>
+                        <th class="text-center">Gross Value</th>
+                        <th class="text-center">Rate</th>
+                        <th class="text-center">Vat</th>
+                        <th width="7%"></th>
+                        </thead>
+                    </table>
+                    <table class="table-list table-list-light table-items" data-prototype="{{ form_widget(form.items.vars.prototype)|e('html_attr') }}">
+                        <tbody>
+                        {% for item in form.items %}
+                            <tr class="item-row">
+                                <td width="25%">{{ form_widget(item.item) }}</td>
+                                <td width="12%">{{ form_widget(item.quantity) }}</td>
+                                <td>{{ form_widget(item.price) }}</td>
+                                <td>{{ form_widget(item.rate) }}</td>
+                                <td>{{ form_widget(item.vatRate) }}</td>
+                                <td width="7%">
+                                    <a class="btn btn-danger btn-remove" href="#" data-toggle="tooltip" data-placement="right" title="Delete">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clear"></div>
             </div>
+            <div class="main-buttons">
+                {{ form_widget(form.submit) }}
+            </div>
+        {{ form_end(form) }}
+        <script src="{{ asset('build/invoice.js') }}"></script>
+    {% else %}
+        <div class="notfound">
+            <span>Invoice not found.</span>
         </div>
-        <div class="page-edit invoice-items">
-            <div class="header flex-row flex-between-center">
-                <h1>Items</h1>
-            </div>
-            <div class="items">
-                <table class="table-list-header table-list-header-light table-items-header">
-                    <thead>
-                    <th class="text-center" width="25%">Product</th>
-                    <th class="text-center" width="12%">Quantity</th>
-                    <th class="text-center">Gross Value</th>
-                    <th class="text-center">Rate</th>
-                    <th class="text-center">Vat</th>
-                    </thead>
-                </table>
-                <table class="table-list table-list-light table-items" data-prototype="{{ form_widget(form.items.vars.prototype)|e('html_attr') }}">
-                    <tbody>
-                    {% for item in form.items %}
-                        <tr class="item-row">
-                            <td width="25%">{{ form_widget(item.item) }}</td>
-                            <td width="12%">{{ form_widget(item.quantity) }}</td>
-                            <td>{{ form_widget(item.price) }}</td>
-                            <td>{{ form_widget(item.rate) }}</td>
-                            <td>{{ form_widget(item.vatRate) }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <div class="main-buttons">
-            {{ form_widget(form.submit) }}
-        </div>
-    {{ form_end(form) }}
-    <script src="{{ asset('build/invoice.js') }}"></script>
+    {% endif %}
 {% endblock %}
