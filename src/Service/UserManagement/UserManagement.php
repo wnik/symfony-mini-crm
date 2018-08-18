@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\UserManagement;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class UserManagement {
+class UserManagement implements UserManagementInterface
+{
 
     private $tokenStorage;
 
@@ -13,7 +14,7 @@ class UserManagement {
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function getLoggedAs()
+    public function getLoggedAs(): string
     {
         return $this->tokenStorage->getToken()->getUser()->getUsername();
     }

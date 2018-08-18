@@ -2,7 +2,7 @@
 
 namespace App\Controller\Mails;
 
-use App\Service\UnitsOfInformationService;
+use App\Service\UnitsOfInformation\UnitsOfInformationInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use PhpImap;
 use Pagerfanta\Adapter\ArrayAdapter;
@@ -14,7 +14,7 @@ class MailsController extends Controller
     private $mailbox;
     private $unitsOfInformation;
 
-    public function __construct(PhpImap\Mailbox $mailbox, UnitsOfInformationService $unitsOfInformation)
+    public function __construct(PhpImap\Mailbox $mailbox, UnitsOfInformationInterface $unitsOfInformation)
     {
         $this->mailbox            = $mailbox;
         $this->unitsOfInformation = $unitsOfInformation;

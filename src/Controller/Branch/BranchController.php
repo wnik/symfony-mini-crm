@@ -3,7 +3,7 @@
 namespace App\Controller\Branch;
 
 use App\Entity\Branch\Branch;
-use App\Entity\Search;
+use App\Entity\Search\Search;
 use App\Form\Branch\BranchType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use App\Form\SearchSidebarType;

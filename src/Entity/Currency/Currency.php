@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Currency\CurrencyInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CurrencyRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Currency\CurrencyRepository")
  */
 Class Currency implements CurrencyInterface
 {

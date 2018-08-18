@@ -37,7 +37,7 @@ class Employee
     private $phone;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\JobTitle", inversedBy="employees")
+     * @ORM\ManyToOne(targetEntity="App\Entity\JobTitle\JobTitle", inversedBy="employees")
      */
     private $jobTitle;
 
@@ -67,20 +67,25 @@ class Employee
     private $picture;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\City", inversedBy="employees")
+     * @ORM\ManyToOne(targetEntity="App\Entity\City\City", inversedBy="employees")
      */
     private $city;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Country", inversedBy="employees")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Country\Country", inversedBy="employees")
      */
     private $country;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="employeeId", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="App\Entity\User\User", inversedBy="employeeId", cascade={"all"})
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Invoice\Invoice", mappedBy="employee")
+     */
+    private $invoiceEmployees;
 
     /**
      * @return mixed

@@ -45,7 +45,8 @@ var Invoice = (function ($) {
         Invoice.$collectionHolder.data('index', index + 1);
 
         var $newRow = $('<tr class="item-row"></tr>').append(newForm);
-
+        $newRow.find('td').eq(0).attr('width', '25%');
+        $newRow.find('td').eq(1).attr('width', '12%');
         $newRow.append('<td width="7%">' + config.btnRemove + '</td>');
 
         Invoice.$collectionHolder.append($newRow);

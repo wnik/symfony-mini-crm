@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Search;
+use App\Entity\Search\Search;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

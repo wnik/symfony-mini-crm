@@ -3,6 +3,6 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     globals:
-        user_management: '@App\Service\UserManagement'
+        user_management: '@App\Service\UserManagement\UserManagement'
         pictures_path: '%pictures_path%'
         pictures_noimage: '%pictures_noimage%'

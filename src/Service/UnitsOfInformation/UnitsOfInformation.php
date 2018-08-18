@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\UnitsOfInformation;
 
-class UnitsOfInformationService
+class UnitsOfInformation implements UnitsOfInformationInterface
 {
     const BASE = 1024;
 
@@ -26,7 +26,7 @@ class UnitsOfInformationService
         $this->setUnitsPositions();
     }
 
-    public function convert($value)
+    public function convert(int $value)
     {
         if (!$this->isUnitsExists()) {
             $unit = $this->getWrongUnit();

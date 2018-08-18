@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\FileManagement;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 
 
-class FileManagement
+class FileManagement implements FileManagementInterface
 {
     private $fileSystem;
     private $finder;

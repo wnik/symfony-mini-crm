@@ -2,7 +2,8 @@
 
 namespace App\Entity\Payment;
 
-use App\Entity\PaymentType\PaymentTypeInterface;
+use App\Entity\Invoice\InvoiceInterface;
+use App\Entity\Payment\PaymentTypeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Payment\PaymentInterface;
 
@@ -19,7 +20,7 @@ Class Payment implements PaymentInterface
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\PaymentType\PaymentType", inversedBy="payments")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Payment\PaymentType", inversedBy="payments")
      */
     private $type;
 
@@ -38,6 +39,16 @@ Class Payment implements PaymentInterface
      */
     private $status = false;
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
     public function getStatus(): bool
     {
         return $this->status;
@@ -52,5 +63,31 @@ Class Payment implements PaymentInterface
     {
         return $this->updatedAt;
     }
+
+    public function setType(PaymentTypeInterface $type): void
+    {
+        $this->type = $type;
+    }
+
+    public function setUpdatedAt(\DateTime $dateTime): void
+    {
+        $this->updatedAt = $dateTime;
+    }
+
+    public function setStatus(bool $status): void
+    {
+        $this->status = $status;
+    }
+
+    public function getInvoice(): InvoiceInterface
+    {
+        return $this->invoice;
+    }
+
+    public function setInvoice(InvoiceInterface $invoice): void
+    {
+        $this->invoice = $invoice;
+    }
+
 
 }

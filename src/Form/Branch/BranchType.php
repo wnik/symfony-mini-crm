@@ -13,8 +13,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use App\Entity\Country;
-use App\Entity\City;
+use App\Entity\Country\Country;
+use App\Entity\City\City;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class BranchType extends AbstractType

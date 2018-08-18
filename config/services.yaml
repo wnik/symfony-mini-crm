@@ -43,15 +43,14 @@ services:
     App\Controller\Employee\EmployeeController:
         arguments:
         - '@App\Service\EntityRemover\EntityRemoverInterface'
-    App\Service\UserManagement:
+    App\Service\UserManagement\UserManagement:
         autowire: false
         arguments:
             - '@security.token_storage'
-            - '@App\Repository\Employee\EmployeeRepository'
     App\EventListener\LoginListener:
         tags:
             - { name: 'kernel.event_listener', event: security.interactive_login }
-    App\Service\FileUploader:
+    App\Service\FileUploader\FileUploader:
         arguments:
             $targetDirectory: '%pictures_directory%'
     App\EventListener\PictureUploadListener:
@@ -61,18 +60,18 @@ services:
     App\Form\DataTransformer\UserToEmailTransformer:
         arguments:
             - '@Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface'
-    App\Service\FileManagement:
+    App\Service\FileManagement\FileManagement:
         arguments: ['%documents_directory%']
     PhpImap\Mailbox:
         arguments: ['%imap_path%', '%imap_email%', '%imap_password%']
-    App\Service\UnitsOfInformationService:
+    App\Service\UnitsOfInformation\UnitsOfInformation:
         arguments:
             - 'KB'
             - 'GB'
-    App\Service\PropertySummary:
-        tags:
-            - { name: twig.extension }
     App\Service\EntityRemover\EntityRemover:
         arguments:
             - '@Doctrine\Common\Persistence\ManagerRegistry'
             - '@Symfony\Component\Security\Csrf\CsrfTokenManagerInterface'
+    App\Twig\CalculationExtension:
+        tags:
+            - { name: twig.extension }

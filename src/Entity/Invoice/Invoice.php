@@ -4,6 +4,7 @@ namespace App\Entity\Invoice;
 
 use App\Entity\Currency\CurrencyInterface;
 use App\Entity\Customer\CustomerInterface;
+use App\Entity\Employee\Employee;
 use App\Entity\Payment\PaymentInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -43,6 +44,11 @@ class Invoice implements InvoiceInterface
     private $dueDate;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Employee\Employee", inversedBy="invoiceEmployees")
+     */
+    private $employee;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Customer\Customer", inversedBy="invoiceCustomers")
      */
     private $customer;
@@ -68,9 +74,19 @@ class Invoice implements InvoiceInterface
     private $status = false;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Payment\Payment", inversedBy="invoice")
+     * @ORM\OneToOne(targetEntity="App\Entity\Payment\Payment", inversedBy="invoice", cascade={"persist"})
      */
     private $payment;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $total = 0;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $cost = 0;
 
     public function __construct()
     {
@@ -78,7 +94,7 @@ class Invoice implements InvoiceInterface
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId(): int
     {
@@ -86,7 +102,7 @@ class Invoice implements InvoiceInterface
     }
 
     /**
-     * @param mixed $id
+     * @param $id
      */
     public function setId($id): void
     {
@@ -94,7 +110,7 @@ class Invoice implements InvoiceInterface
     }
 
     /**
-     * @return mixed
+     * @return null|string
      */
     public function getReference(): ?string
     {
@@ -102,33 +118,40 @@ class Invoice implements InvoiceInterface
     }
 
     /**
-     * @param mixed $reference
+     * @param null|string $reference
      */
     public function setReference(?string $reference): void
     {
         $this->reference = $reference;
     }
 
+    /**
+     * @return TypeInterface|null
+     */
     public function getType(): ?TypeInterface
     {
         return $this->type;
     }
 
+    /**
+     * @param TypeInterface $type
+     */
     public function setType(TypeInterface $type): void
     {
         $this->type = $type;
     }
 
     /**
-     * @return mixed
+     * @return \DateTimeInterface|null
      */
     public function getIssueDate(): ?\DateTimeInterface
     {
         return $this->issueDate;
     }
 
+
     /**
-     * @param mixed $issueDate
+     * @param \DateTimeInterface $date
      */
     public function setIssueDate(\DateTimeInterface $date): void
     {
@@ -136,7 +159,7 @@ class Invoice implements InvoiceInterface
     }
 
     /**
-     * @return mixed
+     * @return \DateTimeInterface|null
      */
     public function getDueDate(): ?\DateTimeInterface
     {
@@ -144,7 +167,7 @@ class Invoice implements InvoiceInterface
     }
 
     /**
-     * @param mixed $dueDate
+     * @param \DateTimeInterface $date
      */
     public function setDueDate(\DateTimeInterface $date): void
     {
@@ -152,7 +175,7 @@ class Invoice implements InvoiceInterface
     }
 
     /**
-     * @return mixed
+     * @return CustomerInterface|null
      */
     public function getCustomer(): ?CustomerInterface
     {
@@ -160,7 +183,7 @@ class Invoice implements InvoiceInterface
     }
 
     /**
-     * @param mixed $customer
+     * @param CustomerInterface $customer
      */
     public function setCustomer(CustomerInterface $customer): void
     {
@@ -168,7 +191,7 @@ class Invoice implements InvoiceInterface
     }
 
     /**
-     * @return mixed
+     * @return CurrencyInterface|null
      */
     public function getCurrency(): ?CurrencyInterface
     {
@@ -176,7 +199,7 @@ class Invoice implements InvoiceInterface
     }
 
     /**
-     * @param mixed $currency
+     * @param CurrencyInterface $currency
      */
     public function setCurrency(CurrencyInterface $currency): void
     {
@@ -184,7 +207,7 @@ class Invoice implements InvoiceInterface
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
     public function getStatus(): bool
     {
@@ -192,7 +215,7 @@ class Invoice implements InvoiceInterface
     }
 
     /**
-     * @param mixed $status
+     * @param bool $status
      */
     public function setStatus(bool $status): void
     {
@@ -200,7 +223,7 @@ class Invoice implements InvoiceInterface
     }
 
     /**
-     * @return mixed
+     * @return PaymentInterface|null
      */
     public function getPayment(): ?PaymentInterface
     {
@@ -208,7 +231,7 @@ class Invoice implements InvoiceInterface
     }
 
     /**
-     * @param mixed $payment
+     * @param PaymentInterface $payment
      */
     public function setPayment(PaymentInterface $payment): void
     {
@@ -216,7 +239,7 @@ class Invoice implements InvoiceInterface
     }
 
     /**
-     * @return mixed
+     * @return float|null
      */
     public function getRate(): ?float
     {
@@ -224,7 +247,7 @@ class Invoice implements InvoiceInterface
     }
 
     /**
-     * @param mixed $rate
+     * @param float $rate
      */
     public function setRate(float $rate): void
     {
@@ -232,27 +255,41 @@ class Invoice implements InvoiceInterface
     }
 
     /**
-     * @return mixed
+     * @return Collection
      */
     public function getItems(): Collection
     {
         return $this->items;
     }
 
+    /**
+     * @param \App\Entity\Invoice\Item $item
+     * @return InvoiceInterface
+     */
     public function addItem(Item $item): InvoiceInterface
     {
         if (!$this->items->contains($item)) {
             $this->items[] = $item;
+            $this->total += $item->getPrice() * $item->getQuantity();
+            $this->cost += $item->getCost() * $item->getQuantity();
+
             $item->setInvoice($this);
+
         }
 
         return $this;
     }
 
+    /**
+     * @param \App\Entity\Invoice\Item $item
+     * @return InvoiceInterface
+     */
     public function removeItem(Item $item): InvoiceInterface
    {
         if ($this->items->contains($item)) {
             $this->items->removeElement($item);
+            $this->total -= $item->getPrice() * $item->getQuantity();
+            $this->cost -= $item->getCost() * $item->getQuantity();
 
             if ($item->getInvoice() === $this) {
                 $item->setInvoice(null);
@@ -261,5 +298,54 @@ class Invoice implements InvoiceInterface
 
         return $this;
     }
+
+    /**
+     * @return Employee|null
+     */
+    public function getEmployee(): ?Employee
+    {
+        return $this->employee;
+    }
+
+    /**
+     * @param Employee $employee
+     */
+    public function setEmployee(Employee $employee): void
+    {
+        $this->employee = $employee;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotal(): float
+    {
+        return $this->total;
+    }
+
+    /**
+     * @param float $total
+     */
+    public function setTotal(float $total): void
+    {
+        $this->total = $total;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCost(): float
+    {
+        return $this->cost;
+    }
+
+    /**
+     * @param float $cost
+     */
+    public function setCost(float $cost): void
+    {
+        $this->cost = $cost;
+    }
+
 
 }

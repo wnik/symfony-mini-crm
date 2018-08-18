@@ -7,7 +7,7 @@ use App\Form\Customer\CustomerType;
 use App\Service\EntityRemover\EntityRemoverInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use App\Entity\Search;
+use App\Entity\Search\Search;
 use App\Form\SearchSidebarType;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\JsonResponse;

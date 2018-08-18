@@ -2,6 +2,7 @@
 
 namespace App\Entity\Invoice;
 
+use App\Entity\VatRate\VatRate;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,9 +19,14 @@ class Item
     private $id;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="float")
      */
     private $price;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $cost;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -56,17 +62,17 @@ class Item
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      */
-    public function setId($id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
     /**
-     * @return mixed
+     * @return float
      */
-    public function getPrice()
+    public function getPrice(): ?float
     {
         return $this->price;
     }
@@ -74,55 +80,56 @@ class Item
     /**
      * @param mixed $price
      */
-    public function setPrice($price): void
+    public function setPrice(float $price): void
     {
         $this->price = $price;
     }
 
     /**
-     * @return mixed
+     * @return float
      */
-    public function getRate()
+    public function getRate(): ?float
     {
         return $this->rate;
     }
 
     /**
-     * @param mixed $rate
+     * @param float $rate
      */
-    public function setRate($rate): void
+    public function setRate(float $rate): void
     {
         $this->rate = $rate;
     }
 
     /**
-     * @return mixed
+     * @return VatRate
      */
-    public function getVatRate()
+    public function getVatRate(): ?VatRate
     {
         return $this->vatRate;
     }
 
     /**
-     * @param mixed $vatRate
+     * @param VatRate $vatRate
      */
-    public function setVatRate($vatRate): void
+    public function setVatRate(VatRate $vatRate): void
     {
         $this->vatRate = $vatRate;
     }
 
     /**
-     * @return mixed
+     * @return InvoiceInterface
      */
-    public function getInvoice()
+    public function getInvoice(): InvoiceInterface
     {
         return $this->invoice;
     }
 
     /**
-     * @param mixed $invoice
+     * @param InvoiceInterface $invoice
+     * @return Item
      */
-    public function setInvoice($invoice): self
+    public function setInvoice(?InvoiceInterface $invoice): self
     {
         $this->invoice = $invoice;
 
@@ -132,33 +139,49 @@ class Item
     /**
      * @return mixed
      */
-    public function getItem()
+    public function getItem(): ?\App\Entity\Item\Item
     {
         return $this->item;
     }
 
     /**
-     * @param mixed $item
+     * @param \App\Entity\Item\Item $item
      */
-    public function setItem($item): void
+    public function setItem(\App\Entity\Item\Item $item): void
     {
         $this->item = $item;
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
-    public function getQuantity()
+    public function getQuantity(): ?int
     {
         return $this->quantity;
     }
 
     /**
-     * @param mixed $quantity
+     * @param int $quantity
      */
-    public function setQuantity($quantity): void
+    public function setQuantity(int $quantity): void
     {
         $this->quantity = $quantity;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCost(): ?float
+    {
+        return $this->cost;
+    }
+
+    /**
+     * @param float $cost
+     */
+    public function setCost(float $cost): void
+    {
+        $this->cost = $cost;
     }
 
 

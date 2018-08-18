@@ -4,9 +4,9 @@ namespace App\Form\Employee;
 
 use App\Entity\Branch\Branch;
 use App\Entity\Employee\Employee;
-use App\Entity\City;
-use App\Entity\Country;
-use App\Entity\JobTitle;
+use App\Entity\City\City;
+use App\Entity\Country\Country;
+use App\Entity\JobTitle\JobTitle;
 use App\Form\UserEmailType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

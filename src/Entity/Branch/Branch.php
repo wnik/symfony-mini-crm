@@ -61,12 +61,12 @@ class Branch
     private $statisticalNumber;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\City", inversedBy="branches")
+     * @ORM\ManyToOne(targetEntity="App\Entity\City\City", inversedBy="branches")
      */
     private $city;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Country", inversedBy="branches")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Country\Country", inversedBy="branches")
      */
     private $country;
 

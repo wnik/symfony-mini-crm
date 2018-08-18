@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\PaymentType;
+namespace App\Entity\Payment;
 
 interface PaymentTypeInterface
 {

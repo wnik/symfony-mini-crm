@@ -156,6 +156,10 @@ invoices_new:
     path: /dashboard/invoices/new
     controller: App\Controller\Invoice\InvoiceController::create
     methods: ['GET', 'POST']
+invoices_pdf:
+    path: /dashboard/invoices/pdf/{id}
+    controller: App\Controller\Invoice\InvoiceController::pdf
+    methods: ['GET']
 invoices_edit:
     path: /dashboard/invoices/{id}
     controller: App\Controller\Invoice\InvoiceController::edit

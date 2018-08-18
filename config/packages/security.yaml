@@ -1,12 +1,12 @@
 security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     encoders:
-        App\Entity\User:
+        App\Entity\User\User:
             algorithm: bcrypt
     providers:
         mysql:
             entity:
-                class: App\Entity\User
+                class: App\Entity\User\User
                 property: email
 #        in_memory: { memory: ~ }
     firewalls:

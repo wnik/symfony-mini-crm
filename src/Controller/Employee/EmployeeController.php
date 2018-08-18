@@ -4,7 +4,7 @@ namespace App\Controller\Employee;
 
 use App\Entity\Employee\Employee;
 use App\Form\Employee\EmployeeType;
-use App\Entity\Search;
+use App\Entity\Search\Search;
 use App\Form\SearchSidebarType;
 use App\Service\EntityRemover\EntityRemoverInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

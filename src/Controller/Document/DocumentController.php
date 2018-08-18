@@ -4,7 +4,7 @@ namespace App\Controller\Document;
 
 use App\Entity\Document\Document;
 use App\Form\Document\DocumentType;
-use App\Service\FileManagement;
+use App\Service\FileManagement\FileManagementInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +23,7 @@ class DocumentController extends Controller
 
     private $fileManagement;
 
-    public function __construct(FileManagement $fileManagement)
+    public function __construct(FileManagementInterface $fileManagement)
     {
         $this->fileManagement = $fileManagement;
     }

@@ -89,10 +89,9 @@ a {
 }
 
 .alert-success {
-  background-color: $font-white;
-  border: 1px solid $shadow;
-  border-top: 2px solid $success-color;
-  color: $success-color;
+  background-color: $success-color;
+  border: 0;
+  color: $font-white;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
@@ -384,6 +383,16 @@ a {
   &:hover {
     color: $font-white;
     background-color: #3498DB;
+  }
+}
+
+.btn-pdf {
+  color: $main-color;
+  background-color: transparent;
+
+  &:hover {
+    background-color: transparent;
+    color: $btn-background-hover;
   }
 }
 
@@ -689,13 +698,10 @@ button {
 
 .notfound {
   padding: 15px;
-  background-color: $content-dark;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
+  background-color: $red;
 
   span {
-    color: $sidebar-dark;
+    color: $font-white;
     font-size: $font-size-normal;
     font-weight: 700;
   }

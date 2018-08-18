@@ -36,6 +36,10 @@
                                 {{ form_widget(form.currency, { attr: { class: 'form-control' } }) }}
                             </div>
                             <div class="form-group">
+                                {{ form_label(form.payment) }}
+                                {{ form_widget(form.payment, { attr: { class: 'form-control' } }) }}
+                            </div>
+                            <div class="form-group">
                                 {{ form_label(form.rate) }}
                                 {{ form_widget(form.rate, { attr: { class: 'form-control' } }) }}
                             </div>
@@ -53,6 +57,7 @@
                         <th class="text-center" width="25%">Product</th>
                         <th class="text-center" width="12%">Quantity</th>
                         <th class="text-center">Gross Value</th>
+                        <th class="text-center">Cost</th>
                         <th class="text-center">Rate</th>
                         <th class="text-center">Vat</th>
                         <th width="7%"></th>
@@ -65,6 +70,7 @@
                                 <td width="25%">{{ form_widget(item.item) }}</td>
                                 <td width="12%">{{ form_widget(item.quantity) }}</td>
                                 <td>{{ form_widget(item.price) }}</td>
+                                <td>{{ form_widget(item.cost) }}</td>
                                 <td>{{ form_widget(item.rate) }}</td>
                                 <td>{{ form_widget(item.vatRate) }}</td>
                                 <td width="7%">

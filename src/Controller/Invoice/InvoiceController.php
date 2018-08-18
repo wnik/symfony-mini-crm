@@ -6,25 +6,28 @@ use App\Entity\Invoice\Invoice;
 use App\Entity\Invoice\Type;
 use App\Factory\Invoice\InvoiceFactoryInterface;
 use App\Service\EntityRemover\EntityRemoverInterface;
+use App\Service\UserManagement\UserManagementInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use App\Form\Invoice\InvoiceType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Item\Item;
-use App\Entity\Invoice\Item as InvoiceItem;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Knp\Snappy\Pdf;
 
 class InvoiceController extends Controller
 {
     private $invoiceFactory;
     private $entityRemover;
+    private $userManagement;
 
-    public function __construct(InvoiceFactoryInterface $invoiceFactory, EntityRemoverInterface $entityRemover)
+    public function __construct(InvoiceFactoryInterface $invoiceFactory, EntityRemoverInterface $entityRemover, UserManagementInterface $userManagement)
     {
         $this->invoiceFactory = $invoiceFactory;
         $this->entityRemover = $entityRemover;
+        $this->userManagement = $userManagement;
     }
 
     public function index(): Response
@@ -35,6 +38,26 @@ class InvoiceController extends Controller
            'title' => 'CRM - Sales',
             'invoices' => $invoices,
         ));
+    }
+
+    public function pdf(int $id, Request $request)
+    {
+        $invoice = $this->getDoctrine()->getRepository(Invoice::class)->find($id);
+
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->headers->set('Content-Disposition', 'inline; filename="' . $invoice->getReference() . '.pdf"');
+
+        $pdf = new Pdf('C:\"Program Files"\wkhtmltopdf\bin\wkhtmltopdf.exe');
+
+        $template = $this->renderView('Invoice/pdf.html.twig', array(
+           'title' => $invoice->getReference(),
+            'invoice' => $invoice,
+        ));
+
+        $response->setContent($pdf->getOutputFromHtml($template));
+
+        return $response;
     }
 
     public function delete(Request $request): JsonResponse
@@ -95,12 +118,6 @@ class InvoiceController extends Controller
 
         $invoice = $this->invoiceFactory->create();
 
-        $invoiceItem = new InvoiceItem();
-        $invoiceItem->setQuantity(0);
-        $invoiceItem->setPrice(0);
-
-        $invoice->addItem($invoiceItem);
-
         $form = $this->createForm(InvoiceType::class, $invoice, array(
             'reference' => $this->invoiceFactory->generateReference($this->getDoctrine()->getRepository(Type::class)->getDefault()),
         ));
@@ -110,10 +127,10 @@ class InvoiceController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
             $invoice = $form->getData();
-
             $reference = $this->invoiceFactory->generateReference($invoice->getType());
 
             $invoice->setReference($reference);
+            $invoice->setEmployee($this->userManagement->getEmployee());
 
             $entityManager = $this->getDoctrine()->getManager();
 

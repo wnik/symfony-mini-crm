@@ -2,19 +2,18 @@
 
 namespace App\EventListener;
 
-use App\Bundle\BranchBundle\Entity\Branch;
-use App\Bundle\EmployeeBundle\Entity\Employee;
+use App\Entity\Branch\Branch;
+use App\Entity\Employee\Employee;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use App\Service\FileUploader;
-use Symfony\Component\HttpFoundation\File\File;
+use App\Service\FileUploader\FileUploaderInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class PictureUploadListener
 {
     private $uploader;
 
-    public function __construct(FileUploader $uploader)
+    public function __construct(FileUploaderInterface $uploader)
     {
         $this->uploader = $uploader;
     }

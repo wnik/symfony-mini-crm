@@ -2,7 +2,7 @@
 
 namespace App\Form\DataTransformer;
 
-use App\Entity\User;
+use App\Entity\User\User;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 

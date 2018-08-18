@@ -27,6 +27,9 @@ class ItemType extends AbstractType
             ->add('price', NumberType::class, array(
                 'label' => false,
             ))
+            ->add('cost', NumberType::class, array(
+                'label' => false,
+            ))
             ->add('rate', TextType::class, array(
                 'label' => false,
                 'required' => false,

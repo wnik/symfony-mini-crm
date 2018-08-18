@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Entity\PaymentType;
+namespace App\Entity\Payment;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\PaymentType\PaymentTypeInterface;
+use App\Entity\Payment\PaymentTypeInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\PaymentTypeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Payment\PaymentTypeRepository")
  */
 Class PaymentType implements PaymentTypeInterface
 {

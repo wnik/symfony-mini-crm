@@ -22,6 +22,9 @@
                 <th>Issue Date</th>
                 <th>Due Date</th>
                 <th class="text-center">Amount</th>
+                <th class="text-center">Cost</th>
+                <th class="text-center">Margin</th>
+                <th class="text-center">Profit</th>
                 <th class="text-center">Currency</th>
                 <th class="actions"></th>
                 </thead>
@@ -37,9 +40,15 @@
                     <td>{{ invoice.customer.firstName ~ ' ' ~ invoice.customer.lastName }}</td>
                     <td>{{ invoice.issueDate.format('d.m.Y') }}</td>
                     <td>{{ invoice.dueDate.format('d.m.Y') }}</td>
-                    <td class="text-center">{{ propertySummary(invoice.items, 'getPrice') }}</td>
+                    <td class="text-center">{{ invoice.total }}</td>
+                    <td class="text-center">{{ invoice.cost }}</td>
+                    <td class="text-center">{{ calculation('margin', invoice.total, invoice.cost)|number_format(2, '.', ' ') }}%</td>
+                    <td class="text-center">{{ invoice.total - invoice.cost }}</td>
                     <td class="text-center">{{ invoice.currency.iSO }}</td>
                     <td class="actions">
+                        <a class="btn btn-pdf" href="{{ path('invoices_pdf', { id: invoice.id }) }}" data-toggle="tooltip" data-placement="left" title="PDF" target="_blank">
+                            <i class="fa fa-file-pdf-o"></i>
+                        </a>
                         <a class="btn btn-info" href="{{ path('invoices_edit', { id: invoice.id }) }}" data-toggle="tooltip" data-placement="right" title="Edit">
                             <i class="fa fa-pencil"></i>
                         </a>
