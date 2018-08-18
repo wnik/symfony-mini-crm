@@ -2,18 +2,15 @@
 
 namespace App\Service;
 
-use App\Repository\Employee\EmployeeRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UserManagement {
 
     private $tokenStorage;
-    private $employeeRepository;
 
-    public function __construct(TokenStorageInterface $tokenStorage, EmployeeRepository $repository)
+    public function __construct(TokenStorageInterface $tokenStorage)
     {
         $this->tokenStorage = $tokenStorage;
-        $this->employeeRepository = $repository;
     }
 
     public function getLoggedAs()
@@ -21,11 +18,14 @@ class UserManagement {
         return $this->tokenStorage->getToken()->getUser()->getUsername();
     }
 
+    public function getEmployee()
+    {
+        return $this->tokenStorage->getToken()->getUser()->getEmployee();
+    }
+
     public function getPicture()
     {
-        $employee = $this->employeeRepository->find(
-            $this->tokenStorage->getToken()->getUser()->getEmployee()
-        );
+        $employee = $this->getEmployee();
 
         if (!$employee) {
             return false;
