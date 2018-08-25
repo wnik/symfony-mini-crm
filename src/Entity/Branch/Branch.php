@@ -36,7 +36,7 @@ class Branch
     private $picture = '';
 
     /**
-     * @ORM\Column(name="postal_code", type="string", length=13)
+     * @ORM\ManyToOne(targetEntity="App\Entity\PostalCode\PostalCode", inversedBy="branches", cascade={"persist"})
      */
     private $postalCode;
 
@@ -50,13 +50,13 @@ class Branch
      */
     private $address2;
 
-    /** NIP
-     * @ORM\Column(name="tax_id", type="string")
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\TaxId\TaxId", inversedBy="branches", cascade={"persist"})
      */
     private $taxId;
 
-    /** REGON
-     * @ORM\Column(name="statistical_number", type="string")
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\StatisticalNumber\StatisticalNumber", inversedBy="branches", cascade={"persist"})
      */
     private $statisticalNumber;
 
@@ -69,7 +69,6 @@ class Branch
      * @ORM\ManyToOne(targetEntity="App\Entity\Country\Country", inversedBy="branches")
      */
     private $country;
-
 
     /**
      * @ORM\Column(name="create_date", type="date")

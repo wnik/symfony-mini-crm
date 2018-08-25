@@ -41,7 +41,37 @@ class Customer implements CustomerInterface
     /**
      * @ORM\Column(type="string")
      */
-    private $address;
+    private $address1;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $address2;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\City\City", inversedBy="customers")
+     */
+    private $city;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Country\Country", inversedBy="customers")
+     */
+    private $country;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\PostalCode\PostalCode", inversedBy="customers", cascade={"persist"})
+     */
+    private $postalCode;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\TaxId\TaxId", inversedBy="customers", cascade={"persist"})
+     */
+    private $taxId;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\StatisticalNumber\StatisticalNumber", inversedBy="customers", cascade={"persist"})
+     */
+    private $statisticalNumber;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Invoice\Invoice", mappedBy="customer")
@@ -136,22 +166,118 @@ class Customer implements CustomerInterface
     /**
      * @return mixed
      */
-    public function getAddress(): ?string
+    public function getAddress1(): ?string
     {
-        return $this->address;
+        return $this->address1;
     }
 
     /**
      * @param mixed $address
      */
-    public function setAddress(?string $address): void
+    public function setAddress1(?string $address): void
     {
-        $this->address = $address;
+        $this->address1 = $address;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAddress2(): ?string
+    {
+        return $this->address2;
+    }
+
+    /**
+     * @param mixed $address
+     */
+    public function setAddress2(?string $address): void
+    {
+        $this->address2 = $address;
     }
 
     public function getFullName(): string
     {
         return "{$this->firstName} {$this->lastName}";
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param mixed $city
+     */
+    public function setCity($city): void
+    {
+        $this->city = $city;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param mixed $country
+     */
+    public function setCountry($country): void
+    {
+        $this->country = $country;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPostalCode()
+    {
+        return $this->postalCode;
+    }
+
+    /**
+     * @param mixed $postalCode
+     */
+    public function setPostalCode($postalCode): void
+    {
+        $this->postalCode = $postalCode;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTaxId()
+    {
+        return $this->taxId;
+    }
+
+    /**
+     * @param mixed $taxId
+     */
+    public function setTaxId($taxId): void
+    {
+        $this->taxId = $taxId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatisticalNumber()
+    {
+        return $this->statisticalNumber;
+    }
+
+    /**
+     * @param mixed $statisticalNumber
+     */
+    public function setStatisticalNumber($statisticalNumber): void
+    {
+        $this->statisticalNumber = $statisticalNumber;
     }
 
 

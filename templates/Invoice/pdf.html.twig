@@ -10,6 +10,16 @@
             font-weight: 400;
         }
 
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p {
+            margin: 0;
+        }
+
         .page {
             overflow: hidden;
             page-break-after: always;
@@ -50,6 +60,24 @@
             margin-bottom: 3px;
         }
 
+        .contractors {
+            padding-top: 20px;
+        }
+
+        .contractors .seller,
+        .contractors .buyer {
+            width: 48%;
+        }
+
+        .contractors h1 {
+            font-size: 24px;
+            font-weight: 600;
+            border-bottom: 1px solid #566071;
+            padding-bottom: 3px;
+            padding-left: 5px;
+            margin-bottom: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -61,10 +89,21 @@
                 <div class="clear"></div>
             </div>
             <div class="general-dates">
-                <p>{% trans %}Place of issue{% endtrans %}: </p>
                 <p>{% trans %}Date of issue{% endtrans %}: <strong>{{ invoice.issueDate.format('d.m.Y') }}</strong></p>
                 <p>{% trans %}Date of sale{% endtrans %}: <strong>{{ invoice.dueDate.format('d.m.Y') }}</strong></p>
-                <p>{% trans %}Payment type and due date of payment{% endtrans %}: <strong>{{ invoice.type.name }}</strong></p>
+                <p>{% trans %}Payment type and due date of payment{% endtrans %}: <strong>{{ invoice.payment.type.name }}</strong>, <strong>{{ invoice.issueDate|date_modify('+' ~ invoice.payment.type.days ~ ' days')|date('d.m.Y') }}</strong></p>
+            </div>
+            <div class="contractors">
+                <div class="seller float-left">
+                    <h1>{% trans %}Seller{% endtrans %}</h1>
+                    <p><strong>{{ invoice.employee.branch.name }}</strong></p>
+                    <p>{{ invoice.employee.branch.address1 }} {{ invoice.employee.branch.address2 }}, {{ invoice.employee.branch.postalcode }} {{ invoice.employee.branch.city.name }}</p>
+                    <p><strong>VAT REFERENCE NUMBER</strong>: {{ invoice.employee.branch.taxId }}</p>
+                    <p><strong>COMPANY REGISTRATION NUMBER</strong>: {{ invoice.employee.branch.statisticalNumber }}</p>
+                </div>
+                <div class="buyer float-right">
+                    <h1>{% trans %}Buyer{% endtrans %}</h1>
+                </div>
             </div>
         </div>
     {% else %}

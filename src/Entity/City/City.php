@@ -32,6 +32,11 @@ class City
     private $employees;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Customer\Customer", mappedBy="city")
+     */
+    private $customers;
+
+    /**
      * @return mixed
      */
     public function getName()

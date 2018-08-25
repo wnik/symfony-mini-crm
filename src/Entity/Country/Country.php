@@ -32,6 +32,11 @@ class Country
     private $employees;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Customer\Customer", mappedBy="country")
+     */
+    private $customers;
+
+    /**
      * @return int
      */
     public function getId()

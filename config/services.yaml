@@ -60,6 +60,9 @@ services:
     App\Form\DataTransformer\UserToEmailTransformer:
         arguments:
             - '@Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface'
+    App\Form\DataTransformer\StringToPostalCode:
+        arguments:
+            - '@App\Repository\PostalCode\PostalCodeRepository'
     App\Service\FileManagement\FileManagement:
         arguments: ['%documents_directory%']
     PhpImap\Mailbox:

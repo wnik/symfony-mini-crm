@@ -16,48 +16,59 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use App\Entity\Country\Country;
 use App\Entity\City\City;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use App\Form\DataTransformer\{StringToStatisticalNumber, StringToTaxId, StringToPostalCode};
 
 class BranchType extends AbstractType
 {
+    private $stringToPostalCodeTransformer;
+    private $stringToTaxIdTransformer;
+    private $stringToStatisticalNumberTransformer;
+
+    public function __construct(StringToPostalCode $stringToPostalCodeTransformer, StringToTaxId $stringToTaxIdTransformer, StringToStatisticalNumber $stringToStatisticalNumberTransformer)
+    {
+        $this->stringToPostalCodeTransformer = $stringToPostalCodeTransformer;
+        $this->stringToTaxIdTransformer = $stringToTaxIdTransformer;
+        $this->stringToStatisticalNumberTransformer = $stringToStatisticalNumberTransformer;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
         $builder->add('name', TextType::class, array(
                 'label' => 'Name',
-            )
-        )
+            ))
             ->add('address1', TextType::class, array(
-                    'label' => 'Address',
-                )
-            )
+                'label' => 'Address',
+            ))
             ->add('address2', TextType::class, array(
-                    'label' => 'Address line 2',
-                )
-            )
-            ->add('postal_code', TextType::class, array(
-                    'label' => 'Postal Code',
-                )
-            )
-            ->add('tax_id', TextType::class, array(
-                    'label' => 'TAX ID',
-                )
-            )
-            ->add('statistical_number', TextType::class, array(
-                    'label' => 'Statistical Number',
-                )
-            )
+                'label' => 'Address line 2',
+            ))
+            ->add('postalCode', TextType::class, array(
+                'label' => 'Postal Code',
+                'required' => true,
+            ))
+            ->add('taxId', TextType::class, array(
+                'label' => 'TAX ID',
+                'required' => true,
+            ))
+            ->add('statisticalNumber', TextType::class, array(
+                'label' => 'Statistical Number',
+                'required' => true,
+            ))
             ->add('country', EntityType::class, array(
-                    'class' => Country::class,
-                    'choice_label' => 'name',
-                    'choice_value' => 'id',
-                )
-            )
+                'class' => Country::class,
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+            ))
             ->add('city', EntityType::class, array(
-                    'class' => City::class,
-                    'choice_label' => 'name',
-                    'choice_value' => 'id',
-                )
-            );
+                'class' => City::class,
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+            ));
+
+        $builder->get('postalCode')->addModelTransformer($this->stringToPostalCodeTransformer);
+        $builder->get('taxId')->addModelTransformer($this->stringToTaxIdTransformer);
+        $builder->get('statisticalNumber')->addModelTransformer($this->stringToStatisticalNumberTransformer);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
             $branch = $event->getData();
