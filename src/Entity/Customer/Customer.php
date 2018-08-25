@@ -2,6 +2,11 @@
 
 namespace App\Entity\Customer;
 
+use App\Entity\City\CityInterface;
+use App\Entity\Country\CountryInterface;
+use App\Entity\PostalCode\PostalCodeInterface;
+use App\Entity\StatisticalNumber\StatisticalNumberInterface;
+use App\Entity\TaxId\TaxIdInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Customer\CustomerInterface;
@@ -203,7 +208,7 @@ class Customer implements CustomerInterface
     /**
      * @return mixed
      */
-    public function getCity()
+    public function getCity(): CityInterface
     {
         return $this->city;
     }
@@ -211,7 +216,7 @@ class Customer implements CustomerInterface
     /**
      * @param mixed $city
      */
-    public function setCity($city): void
+    public function setCity(CityInterface $city): void
     {
         $this->city = $city;
     }
@@ -219,7 +224,7 @@ class Customer implements CustomerInterface
     /**
      * @return mixed
      */
-    public function getCountry()
+    public function getCountry(): CountryInterface
     {
         return $this->country;
     }
@@ -227,7 +232,7 @@ class Customer implements CustomerInterface
     /**
      * @param mixed $country
      */
-    public function setCountry($country): void
+    public function setCountry(CountryInterface $country): void
     {
         $this->country = $country;
     }
@@ -235,7 +240,7 @@ class Customer implements CustomerInterface
     /**
      * @return mixed
      */
-    public function getPostalCode()
+    public function getPostalCode(): PostalCodeInterface
     {
         return $this->postalCode;
     }
@@ -243,39 +248,39 @@ class Customer implements CustomerInterface
     /**
      * @param mixed $postalCode
      */
-    public function setPostalCode($postalCode): void
+    public function setPostalCode(PostalCodeInterface $postalCode): void
     {
         $this->postalCode = $postalCode;
     }
 
     /**
-     * @return mixed
+     * @return TaxIdInterface
      */
-    public function getTaxId()
+    public function getTaxId(): TaxIdInterface
     {
         return $this->taxId;
     }
 
     /**
-     * @param mixed $taxId
+     * @param TaxIdInterface $taxId
      */
-    public function setTaxId($taxId): void
+    public function setTaxId(TaxIdInterface $taxId): void
     {
         $this->taxId = $taxId;
     }
 
     /**
-     * @return mixed
+     * @return StatisticalNumberInterface
      */
-    public function getStatisticalNumber()
+    public function getStatisticalNumber(): StatisticalNumberInterface
     {
         return $this->statisticalNumber;
     }
 
     /**
-     * @param mixed $statisticalNumber
+     * @param StatisticalNumberInterface $statisticalNumber
      */
-    public function setStatisticalNumber($statisticalNumber): void
+    public function setStatisticalNumber(StatisticalNumberInterface $statisticalNumber): void
     {
         $this->statisticalNumber = $statisticalNumber;
     }

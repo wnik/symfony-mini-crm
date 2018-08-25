@@ -97,12 +97,16 @@
                 <div class="seller float-left">
                     <h1>{% trans %}Seller{% endtrans %}</h1>
                     <p><strong>{{ invoice.employee.branch.name }}</strong></p>
-                    <p>{{ invoice.employee.branch.address1 }} {{ invoice.employee.branch.address2 }}, {{ invoice.employee.branch.postalcode }} {{ invoice.employee.branch.city.name }}</p>
-                    <p><strong>VAT REFERENCE NUMBER</strong>: {{ invoice.employee.branch.taxId }}</p>
-                    <p><strong>COMPANY REGISTRATION NUMBER</strong>: {{ invoice.employee.branch.statisticalNumber }}</p>
+                    <p>{{ invoice.employee.branch.address1 }} {{ invoice.employee.branch.address2 }}, {{ invoice.employee.branch.postalCode.code }} {{ invoice.employee.branch.city.name }}</p>
+                    <p><strong>VAT REFERENCE NUMBER</strong>: {{ invoice.employee.branch.taxId.number }}</p>
+                    <p><strong>COMPANY REGISTRATION NUMBER</strong>: {{ invoice.employee.branch.statisticalNumber.number }}</p>
                 </div>
                 <div class="buyer float-right">
                     <h1>{% trans %}Buyer{% endtrans %}</h1>
+                    <p><strong>{{ invoice.customer.fullName }}</strong></p>
+                    <p>{{ invoice.customer.address1 }} {{ invoice.customer.address2 }}, {{ invoice.customer.postalCode.code }} {{ invoice.customer.city.name }}</p>
+                    <p><strong>VAT REFERENCE NUMBER</strong>: {{ invoice.customer.taxId.number }}</p>
+                    <p><strong>COMPANY REGISTRATION NUMBER</strong>: {{ invoice.customer.statisticalNumber.number }}</p>
                 </div>
             </div>
         </div>

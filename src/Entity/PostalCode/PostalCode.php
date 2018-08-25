@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostalCode\PostalCodeRepository")
  */
-class PostalCode
+class PostalCode implements PostalCodeInterface
 {
     /**
      * @ORM\Id
@@ -50,7 +50,7 @@ class PostalCode
     /**
      * @return mixed
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -58,7 +58,7 @@ class PostalCode
     /**
      * @param mixed $code
      */
-    public function setCode($code): void
+    public function setCode(string $code): void
     {
         $this->code = $code;
     }

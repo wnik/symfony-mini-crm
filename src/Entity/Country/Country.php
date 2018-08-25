@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Country\CountryRepository")
  */
-class Country
+class Country implements CountryInterface
 {
     /**
      * @ORM\Id
@@ -44,13 +44,17 @@ class Country
         return $this->id;
     }
 
-
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
     }
 
 }

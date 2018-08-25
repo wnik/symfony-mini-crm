@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TaxId\TaxIdRepository")
  */
-class TaxId
+class TaxId implements TaxIdInterface
 {
     /**
      * @ORM\Id
@@ -47,21 +47,14 @@ class TaxId
         $this->id = $id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getNumber()
+    public function getNumber(): string
     {
         return $this->number;
     }
 
-    /**
-     * @param mixed $number
-     */
-    public function setNumber($number): void
+    public function setNumber(string $number): void
     {
         $this->number = $number;
     }
-
 
 }
