@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\Invoice\ItemRepository")
  * @ORM\Table(name="invoice_item")
  */
-class Item
+class Item implements ItemInterface
 {
     /**
      * @ORM\Id
@@ -22,6 +22,11 @@ class Item
      * @ORM\Column(type="float")
      */
     private $price;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $net;
 
     /**
      * @ORM\Column(type="float")
@@ -169,7 +174,7 @@ class Item
     }
 
     /**
-     * @return float
+     * @return null|float
      */
     public function getCost(): ?float
     {
@@ -183,6 +188,23 @@ class Item
     {
         $this->cost = $cost;
     }
+
+    /**
+     * @return null|float
+     */
+    public function getNet(): ?float
+    {
+        return $this->net;
+    }
+
+    /**
+     * @param float $net
+     */
+    public function setNet(float $net): void
+    {
+        $this->net = $net;
+    }
+
 
 
 }

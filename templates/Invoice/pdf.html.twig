@@ -33,6 +33,10 @@
             float: right;
         }
 
+        .text-center {
+            text-align: center;
+        }
+
         .clear {
             clear: both;
         }
@@ -61,7 +65,7 @@
         }
 
         .contractors {
-            padding-top: 20px;
+            padding-top: 30px;
         }
 
         .contractors .seller,
@@ -78,13 +82,38 @@
             margin-bottom: 10px;
         }
 
+        .items {
+            margin-top: 50px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .items th {
+            background-color: #566071;
+            color: #FFF;
+        }
+
+        .items, td, th {
+            border: 1px solid #566071;
+            padding: 10px;
+        }
+
+        td.no-border {
+            border: 0;
+        }
+
+        .header {
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
     </style>
 </head>
 <body>
     {% if invoice is not null %}
         <div class="page">
             <div class="invoice-number-wrapper">
-                <h1 class="invoice-number float-left">{% trans %}INVOICE{% endtrans %} VAT nr {{ invoice.type.name|upper ~ '/' ~ invoice.reference}}</h1>
+                <h1 class="invoice-number float-left">{% trans %}INVOICE{% endtrans %} VAT {% trans %}no.{% endtrans %} {{ invoice.type.name|upper ~ '/' ~ invoice.reference}}</h1>
                 <h1 class="logo float-right">CRM</h1>
                 <div class="clear"></div>
             </div>
@@ -109,6 +138,60 @@
                     <p><strong>COMPANY REGISTRATION NUMBER</strong>: {{ invoice.customer.statisticalNumber.number }}</p>
                 </div>
             </div>
+            <div class="clear"></div>
+            <table class="items" border="1">
+                <thead>
+                    <th>{% trans %}No.{% endtrans %}</th>
+                    <th>{% trans %}Product Description{% endtrans %}</th>
+                    <th>{% trans %}Qty{% endtrans %}</th>
+                    <th>{% trans %}Unit{% endtrans %}</th>
+                    <th>{% trans %}Net Price{% endtrans %}</th>
+                    <th>{% trans %}Gross Price{% endtrans %}</th>
+                    <th>{% trans %}Net Value{% endtrans %}</th>
+                    <th>{% trans %}VAT{% endtrans %}</th>
+                    <th>{% trans %}VAT Amount{% endtrans %}</th>
+                    <th>{% trans %}Gross Value{% endtrans %}</th>
+                </thead>
+                <tbody>
+                    {% set index = 1 %}
+                    {% set net = 0 %}
+                    {% set gross = 0 %}
+                    {% set vat = 0 %}
+                    {% for item in invoice.items %}
+                        {% set itemNet = calculation('itemSum', {'isNet': true}, item) %}
+                        {% set itemGross = calculation('itemSum', [], item) %}
+                        {% set itemVat = (item.price - item.net) * item.quantity %}
+                        <tr>
+                            <td class="text-center">{{ index }}</td>
+                            <td>{{ item.item.name }}</td>
+                            <td class="text-center">{{ item.quantity }}</td>
+                            <td class="text-center">{{ item.item.unit.name }}</td>
+                            <td class="text-center">{{ item.net }}</td>
+                            <td class="text-center">{{ item.price }}</td>
+                            <td class="text-center">{{ itemNet }}</td>
+                            <td class="text-center">{{ item.vatRate.name }}</td>
+                            <td class="text-center">{{ itemVat }}</td>
+                            <td class="text-center">{{ itemGross }}</td>
+                        </tr>
+                        {% set index = index + 1 %}
+                        {% set net = net + itemNet %}
+                        {% set gross = gross + itemGross %}
+                        {% set vat = vat + itemVat %}
+                    {% endfor %}
+                    <tr>
+                        <td class="no-border"></td>
+                        <td class="no-border"></td>
+                        <td class="no-border"></td>
+                        <td class="no-border"></td>
+                        <td class="no-border"></td>
+                        <td class="text-center header">{% trans %}Total{% endtrans %}</td>
+                        <td class="text-center">{{ net }}</td>
+                        <td class="text-center">x</td>
+                        <td class="text-center">{{ vat }}</td>
+                        <td class="text-center">{{ gross }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     {% else %}
         <h1>{% trans %}Invoice not found{% endtrans %}</h1>

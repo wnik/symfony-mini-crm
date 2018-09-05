@@ -2,15 +2,16 @@
 
 namespace App\Helper\Calculator;
 
+
 class MarginCalculator implements CalculatableInterface
 {
     private $income;
     private $cost;
 
-    public function __construct(float $income, float $cost)
+    public function __construct(array $values, $entity = null)
     {
-        $this->income = $income;
-        $this->cost = $cost;
+        $this->income = $values['income'] ?? null;
+        $this->cost = $values['cost'] ?? null;
     }
 
     public function calculate()

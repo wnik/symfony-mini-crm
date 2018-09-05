@@ -42,7 +42,7 @@
                     <td>{{ invoice.dueDate.format('d.m.Y') }}</td>
                     <td class="text-center">{{ invoice.total }}</td>
                     <td class="text-center">{{ invoice.cost }}</td>
-                    <td class="text-center">{{ calculation('margin', invoice.total, invoice.cost)|number_format(2, '.', ' ') }}%</td>
+                    <td class="text-center">{{ calculation('margin', {'income': invoice.total, 'cost': invoice.cost})|number_format(2, '.', ' ') }}%</td>
                     <td class="text-center">{{ invoice.total - invoice.cost }}</td>
                     <td class="text-center">{{ invoice.currency.iSO }}</td>
                     <td class="actions">

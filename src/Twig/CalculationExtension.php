@@ -2,8 +2,6 @@
 
 namespace App\Twig;
 
-use App\Helper\Calculator\MarginCalculator;
-
 class CalculationExtension extends \Twig_Extension
 {
     public function getFunctions()
@@ -13,11 +11,14 @@ class CalculationExtension extends \Twig_Extension
         );
     }
 
-    public function calculate(string $type, float $total, float $cost)
+    public function calculate(string $type, array $values = array(), $entity = null)
     {
-        if ($type == 'margin') {
-            $calculator = new MarginCalculator($total, $cost);
 
+        $type = 'App\Helper\Calculator\\' . ucfirst($type) . 'Calculator';
+
+        if (class_exists($type)) {
+            $calculator = new $type($values, $entity);
+            
             return $calculator->calculate();
         }
 

@@ -63,6 +63,9 @@ services:
     App\Form\DataTransformer\StringToPostalCode:
         arguments:
             - '@App\Repository\PostalCode\PostalCodeRepository'
+    App\Form\Invoice\ItemType:
+        arguments:
+            - '@App\Helper\Calculator\NettCalculator'
     App\Service\FileManagement\FileManagement:
         arguments: ['%documents_directory%']
     PhpImap\Mailbox:

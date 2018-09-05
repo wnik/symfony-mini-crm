@@ -28,13 +28,18 @@ class Item
     private $description;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Item\Unit", inversedBy="items", cascade={"persist"})
+     */
+    private $unit;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Invoice\Item", mappedBy="item")
      */
     private $items;
 
     public function __construct()
     {
-        $this->items = new ArrayCollection;
+        $this->items = new ArrayCollection();
     }
 
     /**
@@ -85,6 +90,14 @@ class Item
         $this->description = $description;
     }
 
+    public function getUnit(): UnitInterface
+    {
+        return $this->unit;
+    }
 
+    public function setUnit(UnitInterface $unit): void
+    {
+        $this->unit = $unit;
+    }
 
 }
