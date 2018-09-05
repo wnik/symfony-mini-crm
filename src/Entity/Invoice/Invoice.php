@@ -270,14 +270,32 @@ class Invoice implements InvoiceInterface
     {
         if (!$this->items->contains($item)) {
             $this->items[] = $item;
-            $this->total += $item->getPrice() * $item->getQuantity();
-            $this->cost += $item->getCost() * $item->getQuantity();
 
+            $this->addTotals($item);
             $item->setInvoice($this);
-
         }
 
         return $this;
+    }
+
+    public function addTotals(Item $item): void
+    {
+        if ($this->total < 0) {
+            $this->total = 0;
+        }
+
+        if ($this->cost < 0) {
+            $this->cost = 0;
+        }
+
+        $this->total += $item->getPrice() * $item->getQuantity();
+        $this->cost += $item->getCost() * $item->getQuantity();
+    }
+
+    public function removeTotals(Item $item): void
+    {
+        $this->total -= $item->getPrice() * $item->getQuantity();
+        $this->cost -= $item->getCost() * $item->getQuantity();
     }
 
     /**
@@ -288,8 +306,8 @@ class Invoice implements InvoiceInterface
    {
         if ($this->items->contains($item)) {
             $this->items->removeElement($item);
-            $this->total -= $item->getPrice() * $item->getQuantity();
-            $this->cost -= $item->getCost() * $item->getQuantity();
+
+            $this->removeTotals($item);
 
             if ($item->getInvoice() === $this) {
                 $item->setInvoice(null);

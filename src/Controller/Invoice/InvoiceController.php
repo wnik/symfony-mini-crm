@@ -99,7 +99,7 @@ class InvoiceController extends Controller
             $session = new Session();
             $session->getFlashBag()->add('success', 'Invoice has been saved.');
 
-//            return $this->redirect($this->generateUrl('invoices_edit', array('id' => $invoice->getId())));
+            return $this->redirect($this->generateUrl('invoices_edit', array('id' => $invoice->getId())));
         }
 
         return $this->render('Invoice/new.html.twig', array(
