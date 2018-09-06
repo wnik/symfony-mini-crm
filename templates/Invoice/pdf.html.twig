@@ -69,7 +69,8 @@
         }
 
         .contractors .seller,
-        .contractors .buyer {
+        .contractors .buyer,
+        #signatures div {
             width: 48%;
         }
 
@@ -105,6 +106,10 @@
         .header {
             font-weight: 600;
             text-transform: uppercase;
+        }
+
+        #signatures {
+            margin-top: 200px;
         }
 
     </style>
@@ -190,8 +195,160 @@
                         <td class="text-center">{{ vat }}</td>
                         <td class="text-center">{{ gross }}</td>
                     </tr>
+                    {% set index = 1 %}
+                    {% for rate, item in itemsSumByVat %}
+                        <tr>
+                            <td class="no-border"></td>
+                            <td class="no-border"></td>
+                            <td class="no-border"></td>
+                            <td class="no-border"></td>
+                            <td class="no-border"></td>
+                            <td class="text-center header">{% if index == 1 %}{% trans %}Including{% endtrans %}{% endif %}</td>
+                            <td class="text-center">{{ item['net'] }}</td>
+                            <td class="text-center">{{ rate }}%</td>
+                            <td class="text-center">{{ item['vat'] }}</td>
+                            <td class="text-center">{{ item['gross'] }}</td>
+                        </tr>
+                        {% set index = index + 1 %}
+                    {% endfor %}
+                    <tr>
+                        <td class="no-border"></td>
+                        <td class="no-border"></td>
+                        <td class="no-border"></td>
+                        <td class="no-border"></td>
+                        <td class="no-border"></td>
+                        <td class="text-center header" colspan="4">{% trans %}Total to pay{% endtrans %}</td>
+                        <td class="text-center">{{ gross }}</td>
+                    </tr>
                 </tbody>
             </table>
+            <div id="signatures">
+                <div class="float-left">
+                    <hr>
+                    <p class="text-center">{% trans %}The person responsible for the receipt of the invoice{% endtrans %}</p>
+                </div>
+                <div class="float-right">
+                    <hr>
+                    <p class="text-center">{% trans %}The person responsible for invoice issue{% endtrans %}</p>
+                </div>
+            </div>
+        </div>
+        <div class="page">
+            <div class="invoice-number-wrapper">
+                <h1 class="invoice-number float-left">{% trans %}INVOICE{% endtrans %} VAT {% trans %}no.{% endtrans %} {{ invoice.type.name|upper ~ '/' ~ invoice.reference}}</h1>
+                <h1 class="logo float-right">CRM</h1>
+                <div class="clear"></div>
+            </div>
+            <div class="general-dates">
+                <p>{% trans %}Date of issue{% endtrans %}: <strong>{{ invoice.issueDate.format('d.m.Y') }}</strong></p>
+                <p>{% trans %}Date of sale{% endtrans %}: <strong>{{ invoice.dueDate.format('d.m.Y') }}</strong></p>
+                <p>{% trans %}Payment type and due date of payment{% endtrans %}: <strong>{{ invoice.payment.type.name }}</strong>, <strong>{{ invoice.issueDate|date_modify('+' ~ invoice.payment.type.days ~ ' days')|date('d.m.Y') }}</strong></p>
+            </div>
+            <div class="contractors">
+                <div class="seller float-left">
+                    <h1>{% trans %}Seller{% endtrans %}</h1>
+                    <p><strong>{{ invoice.employee.branch.name }}</strong></p>
+                    <p>{{ invoice.employee.branch.address1 }} {{ invoice.employee.branch.address2 }}, {{ invoice.employee.branch.postalCode.code }} {{ invoice.employee.branch.city.name }}</p>
+                    <p><strong>VAT REFERENCE NUMBER</strong>: {{ invoice.employee.branch.taxId.number }}</p>
+                    <p><strong>COMPANY REGISTRATION NUMBER</strong>: {{ invoice.employee.branch.statisticalNumber.number }}</p>
+                </div>
+                <div class="buyer float-right">
+                    <h1>{% trans %}Buyer{% endtrans %}</h1>
+                    <p><strong>{{ invoice.customer.fullName }}</strong></p>
+                    <p>{{ invoice.customer.address1 }} {{ invoice.customer.address2 }}, {{ invoice.customer.postalCode.code }} {{ invoice.customer.city.name }}</p>
+                    <p><strong>VAT REFERENCE NUMBER</strong>: {{ invoice.customer.taxId.number }}</p>
+                    <p><strong>COMPANY REGISTRATION NUMBER</strong>: {{ invoice.customer.statisticalNumber.number }}</p>
+                </div>
+            </div>
+            <div class="clear"></div>
+            <table class="items" border="1">
+                <thead>
+                <th>{% trans %}No.{% endtrans %}</th>
+                <th>{% trans %}Product Description{% endtrans %}</th>
+                <th>{% trans %}Qty{% endtrans %}</th>
+                <th>{% trans %}Unit{% endtrans %}</th>
+                <th>{% trans %}Net Price{% endtrans %}</th>
+                <th>{% trans %}Gross Price{% endtrans %}</th>
+                <th>{% trans %}Net Value{% endtrans %}</th>
+                <th>{% trans %}VAT{% endtrans %}</th>
+                <th>{% trans %}VAT Amount{% endtrans %}</th>
+                <th>{% trans %}Gross Value{% endtrans %}</th>
+                </thead>
+                <tbody>
+                {% set index = 1 %}
+                {% set net = 0 %}
+                {% set gross = 0 %}
+                {% set vat = 0 %}
+                {% for item in invoice.items %}
+                    {% set itemNet = calculation('itemSum', {'isNet': true}, item) %}
+                    {% set itemGross = calculation('itemSum', [], item) %}
+                    {% set itemVat = (item.price - item.net) * item.quantity %}
+                    <tr>
+                        <td class="text-center">{{ index }}</td>
+                        <td>{{ item.item.name }}</td>
+                        <td class="text-center">{{ item.quantity }}</td>
+                        <td class="text-center">{{ item.item.unit.name }}</td>
+                        <td class="text-center">{{ item.net }}</td>
+                        <td class="text-center">{{ item.price }}</td>
+                        <td class="text-center">{{ itemNet }}</td>
+                        <td class="text-center">{{ item.vatRate.name }}</td>
+                        <td class="text-center">{{ itemVat }}</td>
+                        <td class="text-center">{{ itemGross }}</td>
+                    </tr>
+                    {% set index = index + 1 %}
+                    {% set net = net + itemNet %}
+                    {% set gross = gross + itemGross %}
+                    {% set vat = vat + itemVat %}
+                {% endfor %}
+                <tr>
+                    <td class="no-border"></td>
+                    <td class="no-border"></td>
+                    <td class="no-border"></td>
+                    <td class="no-border"></td>
+                    <td class="no-border"></td>
+                    <td class="text-center header">{% trans %}Total{% endtrans %}</td>
+                    <td class="text-center">{{ net }}</td>
+                    <td class="text-center">x</td>
+                    <td class="text-center">{{ vat }}</td>
+                    <td class="text-center">{{ gross }}</td>
+                </tr>
+                {% set index = 1 %}
+                {% for rate, item in itemsSumByVat %}
+                    <tr>
+                        <td class="no-border"></td>
+                        <td class="no-border"></td>
+                        <td class="no-border"></td>
+                        <td class="no-border"></td>
+                        <td class="no-border"></td>
+                        <td class="text-center header">{% if index == 1 %}{% trans %}Including{% endtrans %}{% endif %}</td>
+                        <td class="text-center">{{ item['net'] }}</td>
+                        <td class="text-center">{{ rate }}%</td>
+                        <td class="text-center">{{ item['vat'] }}</td>
+                        <td class="text-center">{{ item['gross'] }}</td>
+                    </tr>
+                    {% set index = index + 1 %}
+                {% endfor %}
+                <tr>
+                    <td class="no-border"></td>
+                    <td class="no-border"></td>
+                    <td class="no-border"></td>
+                    <td class="no-border"></td>
+                    <td class="no-border"></td>
+                    <td class="text-center header" colspan="4">{% trans %}Total to pay{% endtrans %}</td>
+                    <td class="text-center">{{ gross }}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div id="signatures">
+                <div class="float-left">
+                    <hr>
+                    <p class="text-center">{% trans %}The person responsible for the receipt of the invoice{% endtrans %}</p>
+                </div>
+                <div class="float-right">
+                    <hr>
+                    <p class="text-center">{% trans %}The person responsible for invoice issue{% endtrans %}</p>
+                </div>
+            </div>
         </div>
     {% else %}
         <h1>{% trans %}Invoice not found{% endtrans %}</h1>

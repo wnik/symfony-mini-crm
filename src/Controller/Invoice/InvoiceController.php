@@ -5,6 +5,7 @@ namespace App\Controller\Invoice;
 use App\Entity\Invoice\Invoice;
 use App\Entity\Invoice\Type;
 use App\Factory\Invoice\InvoiceFactoryInterface;
+use App\Helper\Calculator\ItemsSumByVatInterface;
 use App\Service\EntityRemover\EntityRemoverInterface;
 use App\Service\UserManagement\UserManagementInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,12 +23,14 @@ class InvoiceController extends Controller
     private $invoiceFactory;
     private $entityRemover;
     private $userManagement;
+    private $itemsSumByVat;
 
-    public function __construct(InvoiceFactoryInterface $invoiceFactory, EntityRemoverInterface $entityRemover, UserManagementInterface $userManagement)
+    public function __construct(InvoiceFactoryInterface $invoiceFactory, EntityRemoverInterface $entityRemover, UserManagementInterface $userManagement, ItemsSumByVatInterface $itemsSumByVat)
     {
         $this->invoiceFactory = $invoiceFactory;
         $this->entityRemover = $entityRemover;
         $this->userManagement = $userManagement;
+        $this->itemsSumByVat = $itemsSumByVat;
     }
 
     public function index(): Response
@@ -50,9 +53,12 @@ class InvoiceController extends Controller
 
         $pdf = new Pdf('C:\"Program Files"\wkhtmltopdf\bin\wkhtmltopdf.exe');
 
+        $this->itemsSumByVat->setItems($invoice->getItems());
+
         $template = $this->renderView('Invoice/pdf.html.twig', array(
            'title' => $invoice->getReference(),
             'invoice' => $invoice,
+            'itemsSumByVat' => $this->itemsSumByVat->getData(),
         ));
 
         $response->setContent($pdf->getOutputFromHtml($template));
