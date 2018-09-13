@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use PhpImap;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
+use Symfony\Component\HttpFoundation\Response;
 
 class MailsController extends Controller
 {
@@ -20,7 +21,7 @@ class MailsController extends Controller
         $this->unitsOfInformation = $unitsOfInformation;
     }
 
-    public function index(int $page)
+    public function index(int $page): Response
     {
         $mails = $this->mailbox->searchMailbox();
 
@@ -42,9 +43,6 @@ class MailsController extends Controller
         $quotaLimit = $this->unitsOfInformation->convert($this->mailbox->getQuotaLimit());
         $quotaUsage = $this->unitsOfInformation->convert($this->mailbox->getQuotaUsage());
 
-        // GB
-//        dump($quotaLimit, $quotaUsage);
-
         return $this->render('Mails/index.html.twig', array(
             'title'      => 'CRM - Mails',
             'mails'      => $pageMails,
@@ -52,7 +50,7 @@ class MailsController extends Controller
         ));
     }
 
-    public function show(int $id)
+    public function show(int $id): Response
     {
         $mail = $this->mailbox->getMail($id);
 

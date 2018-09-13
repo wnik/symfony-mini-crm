@@ -4,6 +4,7 @@ $fa-font-path: "~font-awesome/fonts";
 
 $font-white: #FFF;
 $color-light: #8996a7;
+$color-darker: #30373f;
 $btn-background: #586274;
 $btn-background-hover: #3498DB;
 $badge-success: #99a2b2;
@@ -232,7 +233,8 @@ a {
       padding-right: 8px;
     }
 
-    &.active {
+    &.active,
+    &[aria-expanded="true"] {
       border-right-color: $btn-background-hover;
       background-color: $nav-background-hover;
       color: $nav-color-hover;
@@ -251,9 +253,26 @@ a {
   }
 }
 
-.nav .collapse {
+.nav .collapse,
+.nav .collapsing {
   overflow: hidden;
-  display: none;
+  padding: 0;
+  background-color: $color-darker;
+
+  a {
+    display: block;
+    padding: 15px;
+    color: $color-light;
+    font-size: $font-size-small;
+    font-weight: 600;
+    text-transform: uppercase;
+
+    .fa {
+      font-size: $font-size-big;
+      vertical-align: middle;
+      padding-right: 8px;
+    }
+  }
 }
 
 .sidebar-nav .navbar-default .navbar-nav > li > a:hover {
@@ -1126,4 +1145,9 @@ button {
 
 input[type="checkbox"] {
   border: 1px solid $shadow;
+}
+
+#calendar-holder .fc-state-hover,
+#calendar-holder .fc-state-default {
+  background-image: none;
 }

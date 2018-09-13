@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class DocumentController extends Controller
 {
@@ -28,7 +29,7 @@ class DocumentController extends Controller
         $this->fileManagement = $fileManagement;
     }
 
-    public function index(string $file = '', Request $request)
+    public function index(string $file = '', Request $request): Response
     {
         if ($this->fileManagement->isFile($file)) {
             return $this->file($this->fileManagement->getFullPath($file));
@@ -43,7 +44,7 @@ class DocumentController extends Controller
         ));
     }
 
-    public function add()
+    public function add(): Response
     {
         $document = new Document();
 
@@ -57,7 +58,7 @@ class DocumentController extends Controller
         ));
     }
 
-    public function addFolder(string $name = '')
+    public function addFolder(string $name = ''): JsonResponse
     {
         $name = trim($name);
 
@@ -105,7 +106,7 @@ class DocumentController extends Controller
 
     }
 
-    public function delete(Request $request)
+    public function delete(Request $request): JsonResponse
     {
         $path = $request->get('path');
 

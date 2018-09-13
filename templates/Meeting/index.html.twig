@@ -1,0 +1,43 @@
+{% extends 'dashboard/index.html.twig' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block mainContent %}
+    <div class="main-area col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('bundles/fullcalendar/css/fullcalendar/fullcalendar.min.css') }}" />
+    {% endblock %}
+
+    {% block javascripts %}
+        <script type="text/javascript" src="{{ asset('bundles/fullcalendar/js/fullcalendar/lib/jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/fullcalendar/js/fullcalendar/lib/moment.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/fullcalendar/js/fullcalendar/fullcalendar.min.js') }}"></script>
+        <script>
+            $(function () {
+                $('#calendar-holder').fullCalendar({
+                    header: {
+                        left: 'prev, next, today',
+                        center: 'title',
+                        right: 'month, basicWeek, basicDay'
+                    },
+                    lazyFetching: true,
+                    navLinks: true,
+                    eventSources: [
+                        {
+                            url: '/fc-load-events',
+                            type: 'POST',
+                            data: {
+                                filters: {}
+                            },
+                            error: function () {
+                                alert('There was an error while fetching FullCalendar!');
+                            }
+                        }
+                    ]
+                });
+            });
+        </script>
+    {% endblock %}
+    {% include '@FullCalendar/Calendar/calendar.html.twig' %}
+    </div>
+{% endblock %}

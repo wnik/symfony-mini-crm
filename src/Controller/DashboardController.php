@@ -4,14 +4,16 @@ namespace App\Controller;
 
 //use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\LoginType;
 //use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(): Response
     {
 
         return $this->render('dashboard/index.html.twig', [
@@ -19,12 +21,12 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function redirectToDashboard()
+    public function redirectToDashboard(): RedirectResponse
     {
         return $this->redirectToRoute('dashboard');
     }
 
-    public function login(Request $request, AuthenticationUtils $authUtils)
+    public function login(Request $request, AuthenticationUtils $authUtils): Response
     {
 
         $error = $authUtils->getLastAuthenticationError();

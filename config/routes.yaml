@@ -170,6 +170,24 @@ invoices_delete:
     path: /dashboard/invoices/
     controller: App\Controller\Invoice\InvoiceController::delete
     methods: ['DELETE']
+meetings:
+    path: /dashboard/meetings/
+    controller: App\Controller\Meeting\MeetingController::index
+    methods: ['GET']
+meetings_add:
+    path: /dashboard/meetings/add
+    controller: App\Controller\Meeting\MeetingController::add
+    methods: ['GET', 'POST']
+meetings_edit:
+    path: /dashboard/meetings/{id}
+    controller: App\Controller\Meeting\MeetingController::edit
+    requirements:
+        id: '\d+'
+    methods: ['GET', 'PUT']
+meetings_delete:
+    path: /dashboard/meetings/
+    controller: App\Controller\Meeting\MeetingController::delete
+    methods: ['DELETE']
 login_check:
     path: /auth
 logout:

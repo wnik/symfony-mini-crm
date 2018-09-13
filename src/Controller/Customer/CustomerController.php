@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Search\Search;
 use App\Form\SearchSidebarType;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -22,7 +23,7 @@ class CustomerController extends Controller
         $this->entityRemover = $entityRemover;
     }
 
-    public function index(int $page, Request $request)
+    public function index(int $page, Request $request): Response
     {
         $search = new Search();
 
@@ -56,7 +57,7 @@ class CustomerController extends Controller
     }
 
 
-    public function add(Request $request)
+    public function add(Request $request): Response
     {
         $customer = new Customer();
 
@@ -86,7 +87,7 @@ class CustomerController extends Controller
         ]);
     }
 
-    public function edit(int $id, Request $request)
+    public function edit(int $id, Request $request): Response
     {
         $repository = $this->getDoctrine()->getRepository(Customer::class);
 

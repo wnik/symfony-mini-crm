@@ -81,3 +81,6 @@ services:
     App\Twig\CalculationExtension:
         tags:
             - { name: twig.extension }
+    App\EventListener\FullCalendarListener:
+        tags:
+        - { name: 'kernel.event_listener', event: 'fullcalendar.set_data', method: loadEvents }

@@ -2,13 +2,12 @@
 
 namespace App\Entity\Menu;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Menu\MenuRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Menu\SubmenuRepository")
  */
-class Menu
+class Submenu
 {
     /**
      * @ORM\Id
@@ -33,15 +32,9 @@ class Menu
     private $icon;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Menu\Submenu", mappedBy="menu")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Menu\Menu", inversedBy="submenus")
      */
-    private $submenus;
-
-    public function __construct()
-    {
-        $this->submenus = new ArrayCollection();
-    }
-
+    private $menu;
 
     public function getName()
     {
@@ -61,17 +54,17 @@ class Menu
     /**
      * @return mixed
      */
-    public function getSubmenus()
+    public function getMenu()
     {
-        return $this->submenus;
+        return $this->menu;
     }
 
     /**
-     * @param mixed $submenu
+     * @param mixed $menu
      */
-    public function setSubmenus($submenus): void
+    public function setMenu($menu): void
     {
-        $this->submenus = $submenus;
+        $this->menu = $menu;
     }
 
 

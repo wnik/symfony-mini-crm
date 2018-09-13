@@ -10,6 +10,7 @@ use App\Service\EntityRemover\EntityRemoverInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Csrf\CsrfToken;
 
@@ -22,11 +23,7 @@ class EmployeeController extends Controller
         $this->entityRemover = $entityRemover;
     }
 
-    /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     * List of all employees
-     */
-    public function index(int $page, Request $request)
+    public function index(int $page, Request $request): Response
     {
         $search = new Search();
 
@@ -59,7 +56,7 @@ class EmployeeController extends Controller
         ]);
     }
 
-    public function add(Request $request)
+    public function add(Request $request): Response
     {
         $employee = new Employee();
 
@@ -89,7 +86,7 @@ class EmployeeController extends Controller
         ]);
     }
 
-    public function edit(int $id, Request $request)
+    public function edit(int $id, Request $request): Response
     {
         $repository = $this->getDoctrine()->getRepository(Employee::class);
 

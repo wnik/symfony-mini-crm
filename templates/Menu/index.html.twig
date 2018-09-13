@@ -1,13 +1,28 @@
 <div class="navbar-collapse collapse sidebar-navbar-collapse">
     <ul class="nav navbar-nav">
         {% for item in items %}
+            {% set submenus = item.submenus.getValues %}
             <li>
-                <a href="{{ url('dashboard') ~ item.getSlug }}" {% if item.getSlug in route %} class="active text-center" {% else %} class="text-center" {% endif %}>
-                    {% if item.getIcon %}
-                        <i class="fa {{ item.getIcon }}"></i>
+                <a href="{{ url('dashboard') ~ item.slug }}" {% if item.slug in route %} class="active text-center" {% else %} class="text-center" {% endif %} {% if submenus %}data-toggle="collapse" data-target="#collapse-{{ item.slug }}"{% endif %}>
+                    {% if item.icon %}
+                        <i class="fa {{ item.icon }}"></i>
                     {% endif %}
-                    {{ item.getName }}
+                    {{ item.name }}
                 </a>
+                {% if submenus %}
+                    <ul id="collapse-{{ item.slug }}" class="collapse">
+                        {% for submenu in submenus %}
+                            <li>
+                                <a href="{{ url('dashboard') ~ submenu.slug }}" class="text-center">
+                                    {% if submenu.icon %}
+                                        <i class="fa {{ submenu.icon }}"></i>
+                                    {% endif %}
+                                    {{ submenu.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>

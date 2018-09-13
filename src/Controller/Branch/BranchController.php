@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use App\Form\SearchSidebarType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
@@ -21,7 +22,7 @@ class BranchController extends Controller
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(int $page, Request $request)
+    public function index(int $page, Request $request): Response
     {
         $search = new Search();
 
@@ -55,7 +56,7 @@ class BranchController extends Controller
         );
     }
 
-    public function edit(int $id, Request $request)
+    public function edit(int $id, Request $request): Response
     {
         $repository = $this->getDoctrine()->getRepository('App:Branch\Branch');
         $branch = $repository->find($id);
@@ -95,7 +96,7 @@ class BranchController extends Controller
         );
     }
 
-    public function add(Request $request)
+    public function add(Request $request): Response
     {
         $branch = new Branch();
 

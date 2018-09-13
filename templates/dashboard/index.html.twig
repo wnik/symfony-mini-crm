@@ -80,31 +80,33 @@
         </div>
         <div class="content-wrapper">
             <div id="content" {% if tabs is not defined %}class="padding-top"{% endif %}>
-                <div class="main-area col-lg-9 col-md-9 col-sm-6 col-xs-12">
-                    <div class="breadcrumb">
-                        <span>Dashboard</span>
-                    </div>
-                    {% set successMessages = app.flashes('success') %}
-                    {% if successMessages %}
-                        {% for message in successMessages %}
-                            <div class="alert alert-success" role="alert">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                    {% block content %}
-
-                    {% endblock %}
-                </div>
-                <div class="sidebars col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    {% block sidebars %}
-                        {% if sidebars is defined %}
-                            {% for sidebar in sidebars %}
-                                {{ sidebar|raw }}
+                {% block mainContent %}
+                    <div class="main-area col-lg-9 col-md-9 col-sm-6 col-xs-12">
+                        <div class="breadcrumb">
+                            <span>Dashboard</span>
+                        </div>
+                        {% set successMessages = app.flashes('success') %}
+                        {% if successMessages %}
+                            {% for message in successMessages %}
+                                <div class="alert alert-success" role="alert">
+                                    {{ message }}
+                                </div>
                             {% endfor %}
                         {% endif %}
-                    {% endblock %}
-                </div>
+                        {% block content %}
+
+                        {% endblock %}
+                    </div>
+                    <div class="sidebars col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        {% block sidebars %}
+                            {% if sidebars is defined %}
+                                {% for sidebar in sidebars %}
+                                    {{ sidebar|raw }}
+                                {% endfor %}
+                            {% endif %}
+                        {% endblock %}
+                    </div>
+                {% endblock %}
                 <div class="clear"></div>
             </div>
         </div>

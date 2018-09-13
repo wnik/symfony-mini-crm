@@ -208,7 +208,7 @@ class Customer implements CustomerInterface
     /**
      * @return mixed
      */
-    public function getCity(): CityInterface
+    public function getCity(): ?CityInterface
     {
         return $this->city;
     }
@@ -224,7 +224,7 @@ class Customer implements CustomerInterface
     /**
      * @return mixed
      */
-    public function getCountry(): CountryInterface
+    public function getCountry(): ?CountryInterface
     {
         return $this->country;
     }
@@ -240,7 +240,7 @@ class Customer implements CustomerInterface
     /**
      * @return mixed
      */
-    public function getPostalCode(): PostalCodeInterface
+    public function getPostalCode(): ?PostalCodeInterface
     {
         return $this->postalCode;
     }
@@ -256,7 +256,7 @@ class Customer implements CustomerInterface
     /**
      * @return TaxIdInterface
      */
-    public function getTaxId(): TaxIdInterface
+    public function getTaxId(): ?TaxIdInterface
     {
         return $this->taxId;
     }
@@ -272,7 +272,7 @@ class Customer implements CustomerInterface
     /**
      * @return StatisticalNumberInterface
      */
-    public function getStatisticalNumber(): StatisticalNumberInterface
+    public function getStatisticalNumber(): ?StatisticalNumberInterface
     {
         return $this->statisticalNumber;
     }

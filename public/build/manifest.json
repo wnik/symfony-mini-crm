@@ -1,6 +1,6 @@
 {
-  "build/app.css": "/build/app.e145d243.css",
-  "build/app.js": "/build/app.c44e21bb.js",
+  "build/app.css": "/build/app.32bb693e.css",
+  "build/app.js": "/build/app.285beef2.js",
   "build/branches.js": "/build/branches.05599535.js",
   "build/folder-manager.js": "/build/folder-manager.5fad128a.js",
   "build/fonts/fontawesome-webfont.eot?v=4.7.0": "/build/fonts/fontawesome-webfont.674f50d2.eot",
@@ -15,6 +15,7 @@
   "build/images/glyphicons-halflings-regular.svg": "/build/images/glyphicons-halflings-regular.89889688.svg",
   "build/invoice.js": "/build/invoice.71576e1e.js",
   "build/manifest.js": "/build/manifest.d41d8cd9.js",
+  "build/meeting.js": "/build/meeting.44b34e0a.js",
   "build/table.js": "/build/table.a08a63c3.js",
   "build/vendor.js": "/build/vendor.70fc9b6e.js"
 }

@@ -23,14 +23,14 @@ interface CustomerInterface
     public function setAddress1(?string $address): void;
     public function getAddress2(): ?string;
     public function setAddress2(?string $address): void;
-    public function getPostalCode(): PostalCodeInterface;
+    public function getPostalCode(): ?PostalCodeInterface;
     public function setPostalCode(PostalCodeInterface $postalCode): void;
-    public function getTaxId(): TaxIdInterface;
+    public function getTaxId(): ?TaxIdInterface;
     public function setTaxId(TaxIdInterface $taxId): void;
-    public function getStatisticalNumber(): StatisticalNumberInterface;
+    public function getStatisticalNumber(): ?StatisticalNumberInterface;
     public function setStatisticalNumber(StatisticalNumberInterface $statisticalNumber): void;
-    public function getCity(): CityInterface;
+    public function getCity(): ?CityInterface;
     public function setCity(CityInterface $city): void;
-    public function getCountry(): CountryInterface;
+    public function getCountry(): ?CountryInterface;
     public function setCountry(CountryInterface $country): void;
 }

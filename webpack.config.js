@@ -22,6 +22,7 @@ Encore
     .addEntry('table', './assets/js/table.js')
     .addEntry('folder-manager', './assets/js/folder-manager.js')
     .addEntry('invoice', './assets/js/invoice.js')
+    .addEntry('meeting', './assets/js/meeting.js')
 
     // allow sass/scss files to be processed
     .enableSassLoader(function (sassOptions) {}, {

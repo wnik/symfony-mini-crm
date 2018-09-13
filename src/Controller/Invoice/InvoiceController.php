@@ -43,7 +43,7 @@ class InvoiceController extends Controller
         ));
     }
 
-    public function pdf(int $id, Request $request)
+    public function pdf(int $id, Request $request): Response
     {
         $invoice = $this->getDoctrine()->getRepository(Invoice::class)->find($id);
 
